@@ -2,29 +2,30 @@
   "_$ver": 1,
   "_$id": "vkrlk1jf",
   "_$type": "Scene",
-  "name": "Scene2D",
   "left": 0,
   "right": 0,
   "top": 0,
   "bottom": 0,
+  "name": "Scene2D",
+  "width": 1080,
+  "height": 1920,
   "_$child": [
     {
       "_$id": "n9gjxcltvl",
       "_$type": "Scene3D",
       "name": "Scene3D",
-      "ambientMode": 0,
-      "ambientColor": {
-        "_$type": "Color",
-        "r": 0.424308,
-        "g": 0.4578516,
-        "b": 0.5294118
-      },
       "skyRenderer": {
         "meshType": "dome",
         "material": {
           "_$uuid": "793cffc6-730a-4756-a658-efe98c230292",
           "_$type": "Material"
         }
+      },
+      "ambientColor": {
+        "_$type": "Color",
+        "r": 0.424308,
+        "g": 0.4578516,
+        "b": 0.5294118
       },
       "fogStart": 0,
       "fogColor": {
@@ -33,7 +34,6 @@
         "g": 0.5,
         "b": 0.5
       },
-      "lightmaps": [],
       "_$child": [
         {
           "_$id": "6jx8h8bvc6",
@@ -42,25 +42,25 @@
           "transform": {
             "localPosition": {
               "_$type": "Vector3",
-              "y": 1,
-              "z": 5
+              "y": 13,
+              "z": 11
+            },
+            "localRotation": {
+              "_$type": "Quaternion",
+              "x": -0.4617486132350339,
+              "w": 0.8870108331782217
             }
           },
+          "orthographicVerticalSize": 14.8,
+          "fieldOfView": 42,
+          "nearPlane": 0.3,
+          "farPlane": 1000,
           "clearFlag": 1,
           "clearColor": {
             "_$type": "Color",
             "r": 0.3921,
             "g": 0.5843,
             "b": 0.9294
-          },
-          "orthographicVerticalSize": 10,
-          "fieldOfView": 60,
-          "nearPlane": 0.3,
-          "farPlane": 1000,
-          "normalizedViewport": {
-            "_$type": "Viewport",
-            "width": 1,
-            "height": 1
           }
         },
         {
@@ -74,10 +74,12 @@
               "y": 5,
               "z": 5
             },
-            "localRotationEuler": {
-              "_$type": "Vector3",
-              "x": -50,
-              "y": 30
+            "localRotation": {
+              "_$type": "Quaternion",
+              "x": -0.40821789367673483,
+              "y": 0.23456971600980447,
+              "z": 0.109381654946615,
+              "w": 0.875426098065593
             }
           },
           "_$comp": [
@@ -88,29 +90,22 @@
                 "r": 0.6,
                 "g": 0.6,
                 "b": 0.6
-              },
-              "lightmapBakedType": 1,
-              "shadowMode": 0,
-              "shadowStrength": 1,
-              "shadowDistance": 50,
-              "shadowDepthBias": 1,
-              "shadowNormalBias": 1,
-              "shadowNearPlane": 0.1,
-              "shadowCascadesMode": 0
+              }
             }
           ]
         },
         {
           "_$id": "l77bzsm6",
-          "name": "HexBoard",
           "_$type": "Sprite3D",
+          "name": "HexBoard",
           "_$comp": [
             {
               "_$type": "3c9e2068-0eee-4432-91fa-668b8e3659ea",
-              "_$id": "g2rqe61n",
+              "scriptPath": "../src/game/HexGameController.ts",
               "hexBoard": {
                 "_$ref": "l77bzsm6"
               },
+              "waterLayer": null,
               "basesRoot": {
                 "_$ref": "hmtxejx8"
               },
@@ -165,35 +160,71 @@
               "enemyBase": {
                 "_$ref": "sxg8y9vr"
               },
-              "soldierPrefabPath": "downloads/3d/soldier/Role_taikong_01.lh",
-              "dragonPrefabPath": "downloads/3d/dragon/Role_xiaohuangya_01.lh",
-              "towerPrefabPath": "downloads/3d/tower/SM_Prop_GuardTower_01.lh",
-              "barracksPrefabPath": "downloads/3d/barracks/SM_Bld_Military_Tent_03.lh",
-              "fireEffectPath": "downloads/3d/effects/FLame_red.lh",
+              "defaultClickableTileMarker": null,
+              "initialBuildSlot": null,
+              "unlockCostLayer": null,
+              "soldierPrefabPath": "match/绑定动画/SW_NPC_000_通用/SW_NPC_008_士兵@skin.fbx",
+              "dragonPrefabPath": "match/3月新增资源/丧尸/Boss.fbx",
+              "towerPrefabPath": "match/模型资产/建筑/building_058_FGH_主塔/building_058_FGH_Tower.fbx",
+              "barracksPrefabPath": "match/模型资产/建筑/building_056_主楼/building_056_zhulou.fbx",
+              "dragonNestPrefabPath": "match/模型资产/建筑/building_058_FGH_主塔/building_058_FGH_Tower.fbx",
+              "baseBuildingPrefabPath": "match/模型资产/建筑/building_045_FGH_主楼/building_045_FGH_Main.fbx",
+              "fireEffectPath": "match/3月新增资源/丧尸/PenHuoQi.fbx",
               "hitSoundPath": "downloads/2d/sfx/afedc1f409ba5418cc3ff2d6fdc64eca.mp3",
               "bgmPath": "downloads/2d/bgm/f93f9377dcad12be63b55fcad314858d.mp3",
+              "waterTexturePath": "resources/water/water_surface.png",
+              "hexTilePrefabPath": "match/Models/GLB format/grass.glb",
+              "cardPanelSkinPath": "downloads/2d/card_choice_panel/CardFrame_01_White_Bg.png",
+              "cardOptionSkinPath": "downloads/2d/card_option/CardFrame_01_White_Bg.png",
+              "resultPanelSkinPath": "downloads/2d/result_panel/Popup_Box_05_Bag_Bg.png",
+              "tutorialHintSkinPath": "downloads/2d/tutorial_hint/info.png",
+              "coinIconPath": "downloads/2d/ui/coin_2.png",
+              "cardIconPath": "downloads/2d/ui/card.png",
+              "handIconPath": "downloads/2d/ui/hand.png",
               "initialMoney": 20,
               "hexCost": 25,
               "timerCount": 80,
               "incomeInterval": 3,
               "spawnRate": 3,
-              "redirectTouchCount": 5
+              "redirectTouchCount": 5,
+              "goldSupplyAmount": 35,
+              "buildingModelScale": 0.28,
+              "baseBuildingModelScale": 0.28,
+              "towerModelScale": 0.28,
+              "barracksModelScale": 0.28,
+              "dragonNestModelScale": 0.28,
+              "soldierModelScale": 0.22,
+              "bossModelScale": 0.2,
+              "tileModelScale": 0.42,
+              "showDebugLayerLabels": false
+            }
+          ],
+          "_$child": [
+            {
+              "_$id": "utkwfu3x",
+              "_$type": "Sprite3D",
+              "name": "DefaultClickableTileMarker",
+              "transform": {
+                "localPosition": {
+                  "_$type": "Vector3",
+                  "y": 0.28
+                }
+              }
             }
           ]
         },
         {
           "_$id": "hmtxejx8",
-          "name": "Bases",
           "_$type": "Sprite3D",
+          "name": "Bases",
           "_$child": [
             {
               "_$id": "gtm62qlf",
+              "_$type": "Sprite3D",
               "name": "PlayerBase",
-              "_$prefab": "c4194c66-3069-4272-8097-89a1c58ebd67",
               "transform": {
                 "localPosition": {
                   "_$type": "Vector3",
-                  "x": 0,
                   "y": 0.15,
                   "z": 6.6
                 },
@@ -207,12 +238,11 @@
             },
             {
               "_$id": "sxg8y9vr",
+              "_$type": "Sprite3D",
               "name": "EnemyBase",
-              "_$prefab": "c4194c66-3069-4272-8097-89a1c58ebd67",
               "transform": {
                 "localPosition": {
                   "_$type": "Vector3",
-                  "x": 0,
                   "y": 0.15,
                   "z": -6.6
                 },
@@ -228,76 +258,365 @@
         },
         {
           "_$id": "r6j26egy",
+          "_$type": "Sprite3D",
           "name": "Buildings",
-          "_$type": "Sprite3D"
+          "_$child": [
+            {
+              "_$id": "eqfuk5dw",
+              "_$type": "Sprite3D",
+              "name": "InitialBuildSlot"
+            }
+          ]
         },
         {
           "_$id": "kaq3k0ta",
-          "name": "Units",
-          "_$type": "Sprite3D"
+          "_$type": "Sprite3D",
+          "name": "Units"
         },
         {
           "_$id": "b8tt4spa",
+          "_$type": "Sprite3D",
           "name": "WaterLayer",
-          "_$type": "Sprite3D"
+          "_$child": [
+            {
+              "_$id": "watersurfacesample",
+              "_$type": "Sprite3D",
+              "name": "WaterSurfaceSample",
+              "transform": {
+                "localPosition": {
+                  "_$type": "Vector3",
+                  "x": 0,
+                  "y": -0.22,
+                  "z": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "_$id": "edasset3d",
+          "_$type": "Sprite3D",
+          "name": "EditorAssetSamples",
+          "transform": {
+            "localPosition": {
+              "_$type": "Vector3",
+              "x": -5
+            }
+          },
+          "_$child": [
+            {
+              "_$id": "hexassetsample",
+              "_$prefab": "68b33dd6-c2fd-4de2-96ad-3a7049263801",
+              "name": "HexTileAssetSample",
+              "active": true,
+              "layer": 0,
+              "transform": {
+                "localPosition": {
+                  "_$type": "Vector3",
+                  "y": 0.2
+                },
+                "localRotation": {
+                  "_$type": "Quaternion"
+                },
+                "localScale": {
+                  "_$type": "Vector3",
+                  "x": 0.42,
+                  "y": 0.42,
+                  "z": 0.42
+                }
+              }
+            },
+            {
+              "_$id": "9n4u0agt",
+              "_$prefab": "579f3e75-9418-40d5-9de8-65b7348a0153",
+              "name": "BuildingScaleSample",
+              "active": true,
+              "layer": 0,
+              "transform": {
+                "localPosition": {
+                  "_$type": "Vector3",
+                  "x": 1.8,
+                  "y": 0.2
+                },
+                "localRotation": {
+                  "_$type": "Quaternion"
+                },
+                "localScale": {
+                  "_$type": "Vector3",
+                  "x": 0.28,
+                  "y": 0.28,
+                  "z": 0.28
+                }
+              }
+            },
+            {
+              "_$id": "1wn5y285",
+              "_$prefab": "81a11796-e527-4351-a44b-270e97b89ae4",
+              "name": "SoldierScaleSample",
+              "active": true,
+              "layer": 0,
+              "transform": {
+                "localPosition": {
+                  "_$type": "Vector3",
+                  "x": 2.7068108293661455,
+                  "y": 0.796118318808821
+                },
+                "localRotation": {
+                  "_$type": "Quaternion"
+                },
+                "localScale": {
+                  "_$type": "Vector3",
+                  "x": 0.22,
+                  "y": 0.22,
+                  "z": 0.22
+                }
+              }
+            },
+            {
+              "_$id": "oxlhmxh5",
+              "_$prefab": "8b2d0c49-2b31-4ab1-b59c-2482e71aa7d6",
+              "name": "BossScaleSample",
+              "active": true,
+              "layer": 0,
+              "transform": {
+                "localPosition": {
+                  "_$type": "Vector3",
+                  "x": 4.6,
+                  "y": 0.2
+                },
+                "localRotation": {
+                  "_$type": "Quaternion"
+                },
+                "localScale": {
+                  "_$type": "Vector3",
+                  "x": 0.0699995,
+                  "y": 0.0199997,
+                  "z": 0.2
+                }
+              }
+            },
+            {
+              "_$id": "buildingsamples",
+              "_$type": "Sprite3D",
+              "name": "BuildingSamples",
+              "transform": {
+                "localPosition": {
+                  "_$type": "Vector3",
+                  "x": 0,
+                  "y": 0,
+                  "z": 2.2
+                }
+              },
+              "_$child": [
+                {
+                  "_$id": "basebuildingsample",
+                  "name": "BaseBuildingSample",
+                  "_$prefab": "253a179c-3e3a-45a6-8cde-b43c3d3ed205",
+                  "transform": {
+                    "localPosition": {
+                      "_$type": "Vector3",
+                      "x": 0,
+                      "y": 0.2,
+                      "z": 0
+                    },
+                    "localScale": {
+                      "_$type": "Vector3",
+                      "x": 0.28,
+                      "y": 0.28,
+                      "z": 0.28
+                    }
+                  }
+                },
+                {
+                  "_$id": "towersample",
+                  "name": "TowerSample",
+                  "_$prefab": "579f3e75-9418-40d5-9de8-65b7348a0153",
+                  "transform": {
+                    "localPosition": {
+                      "_$type": "Vector3",
+                      "x": 1.4,
+                      "y": 0.2,
+                      "z": 0
+                    },
+                    "localScale": {
+                      "_$type": "Vector3",
+                      "x": 0.28,
+                      "y": 0.28,
+                      "z": 0.28
+                    }
+                  }
+                },
+                {
+                  "_$id": "barrackssample",
+                  "name": "BarracksSample",
+                  "_$prefab": "60f8cc9b-8e6d-4cb5-8f41-3f60db48e622",
+                  "transform": {
+                    "localPosition": {
+                      "_$type": "Vector3",
+                      "x": 2.8,
+                      "y": 0.2,
+                      "z": 0
+                    },
+                    "localScale": {
+                      "_$type": "Vector3",
+                      "x": 0.28,
+                      "y": 0.28,
+                      "z": 0.28
+                    }
+                  }
+                },
+                {
+                  "_$id": "dragonnestsample",
+                  "name": "DragonNestSample",
+                  "_$prefab": "579f3e75-9418-40d5-9de8-65b7348a0153",
+                  "transform": {
+                    "localPosition": {
+                      "_$type": "Vector3",
+                      "x": 4.2,
+                      "y": 0.2,
+                      "z": 0
+                    },
+                    "localScale": {
+                      "_$type": "Vector3",
+                      "x": 0.28,
+                      "y": 0.28,
+                      "z": 0.28
+                    }
+                  }
+                },
+                {
+                  "_$id": "fireeffectsample",
+                  "name": "FireEffectSample",
+                  "_$prefab": "3cc351f1-6c0f-4fd9-a8ca-8edcb4321b6a",
+                  "transform": {
+                    "localPosition": {
+                      "_$type": "Vector3",
+                      "x": 5.6,
+                      "y": 0.2,
+                      "z": 0
+                    },
+                    "localScale": {
+                      "_$type": "Vector3",
+                      "x": 0.28,
+                      "y": 0.28,
+                      "z": 0.28
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "_$id": "unitsamples",
+              "_$type": "Sprite3D",
+              "name": "UnitSamples",
+              "transform": {
+                "localPosition": {
+                  "_$type": "Vector3",
+                  "x": 0,
+                  "y": 0,
+                  "z": 4.4
+                }
+              },
+              "_$child": [
+                {
+                  "_$id": "soldierlayersample",
+                  "name": "SoldierLayerSample",
+                  "_$prefab": "81a11796-e527-4351-a44b-270e97b89ae4",
+                  "transform": {
+                    "localPosition": {
+                      "_$type": "Vector3",
+                      "x": 0,
+                      "y": 0.2,
+                      "z": 0
+                    },
+                    "localScale": {
+                      "_$type": "Vector3",
+                      "x": 0.22,
+                      "y": 0.22,
+                      "z": 0.22
+                    }
+                  }
+                },
+                {
+                  "_$id": "bosslayersample",
+                  "name": "BossLayerSample",
+                  "_$prefab": "8b2d0c49-2b31-4ab1-b59c-2482e71aa7d6",
+                  "transform": {
+                    "localPosition": {
+                      "_$type": "Vector3",
+                      "x": 1.4,
+                      "y": 0.2,
+                      "z": 0
+                    },
+                    "localScale": {
+                      "_$type": "Vector3",
+                      "x": 0.2,
+                      "y": 0.2,
+                      "z": 0.2
+                    }
+                  }
+                }
+              ]
+            }
+          ]
         }
       ]
     },
     {
       "_$id": "gl0efi1v",
-      "name": "GameUIRoot",
       "_$type": "Box",
+      "name": "GameUIRoot",
       "width": 1080,
       "height": 1920,
       "_$child": [
         {
           "_$id": "svtcmace",
-          "name": "TimerLabel",
           "_$type": "Label",
+          "name": "TimerLabel",
+          "x": 48,
+          "y": 36,
+          "width": 220,
+          "height": 80,
           "text": "80",
           "fontSize": 54,
           "color": "#FFFFFF",
           "stroke": 5,
-          "strokeColor": "#243447",
-          "x": 48,
-          "y": 36,
-          "width": 220,
-          "height": 80
+          "strokeColor": "#243447"
         },
         {
           "_$id": "tn6of286",
-          "name": "MoneyLabel",
           "_$type": "Label",
-          "text": "20",
-          "fontSize": 48,
-          "color": "#FFE46B",
-          "stroke": 5,
-          "strokeColor": "#3A2500",
+          "name": "MoneyLabel",
           "x": 820,
           "y": 42,
           "width": 220,
           "height": 72,
-          "align": "right"
+          "text": "20",
+          "fontSize": 48,
+          "color": "#FFE46B",
+          "align": "right",
+          "stroke": 5,
+          "strokeColor": "#3A2500"
         },
         {
           "_$id": "3aetoxti",
-          "name": "HintLabel",
           "_$type": "Label",
-          "text": "点击相邻地块扩张领地",
-          "fontSize": 48,
-          "color": "#FFFFFF",
-          "stroke": 6,
-          "strokeColor": "#13231A",
+          "name": "HintLabel",
           "x": 120,
           "y": 240,
           "width": 840,
           "height": 90,
-          "align": "center"
+          "text": "点击相邻地块扩张领地",
+          "fontSize": 48,
+          "color": "#FFFFFF",
+          "align": "center",
+          "stroke": 6,
+          "strokeColor": "#13231A"
         },
         {
           "_$id": "byt21aqx",
-          "name": "CardChoicePanel",
           "_$type": "Box",
+          "name": "CardChoicePanel",
           "x": 60,
           "y": 1080,
           "width": 960,
@@ -305,59 +624,91 @@
           "visible": false,
           "_$child": [
             {
-              "_$id": "3dica8rl",
-              "name": "CardTitle",
-              "_$type": "Label",
-              "text": "选择一张卡牌强化防线",
-              "fontSize": 44,
-              "color": "#FFFFFF",
-              "stroke": 5,
-              "strokeColor": "#1D2733",
-              "x": 0,
-              "y": 0,
+              "_$id": "cardpanelsample",
+              "_$type": "Image",
+              "name": "CardPanelAssetSample",
               "width": 960,
-              "height": 80,
-              "align": "center"
+              "height": 420,
+              "skin": "downloads/2d/card_choice_panel/CardFrame_01_White_Bg.png",
+              "sizeGrid": "24,24,24,24,0",
+              "color": "#ffffff"
             },
             {
-              "_$id": "9agl3ots",
-              "name": "CardButtonA",
-              "_$type": "Button",
-              "label": "箭塔",
-              "labelSize": 36,
+              "_$id": "cardoptionsample",
+              "_$type": "Image",
+              "name": "CardOptionAssetSample",
               "x": 30,
               "y": 100,
               "width": 280,
-              "height": 260
+              "height": 260,
+              "skin": "downloads/2d/card_option/CardFrame_01_White_Bg.png",
+              "sizeGrid": "24,24,24,24,0",
+              "color": "#ffffff"
+            },
+            {
+              "_$id": "3dica8rl",
+              "_$type": "Label",
+              "name": "CardTitle",
+              "width": 960,
+              "height": 80,
+              "text": "选择一张卡牌强化防线",
+              "fontSize": 44,
+              "color": "#FFFFFF",
+              "align": "center",
+              "stroke": 5,
+              "strokeColor": "#1D2733"
+            },
+            {
+              "_$id": "9agl3ots",
+              "_$type": "Button",
+              "name": "CardButtonA",
+              "x": 30,
+              "y": 100,
+              "width": 280,
+              "height": 260,
+              "skin": "downloads/2d/card_option/CardFrame_01_White_Bg.png",
+              "sizeGrid": "24,24,24,24,0",
+              "label": "箭塔",
+              "labelSize": 36,
+              "labelAlign": "center",
+              "labelVAlign": "middle"
             },
             {
               "_$id": "p5zyi812",
-              "name": "CardButtonB",
               "_$type": "Button",
-              "label": "兵营",
-              "labelSize": 36,
+              "name": "CardButtonB",
               "x": 340,
               "y": 100,
               "width": 280,
-              "height": 260
+              "height": 260,
+              "skin": "downloads/2d/card_option/CardFrame_01_White_Bg.png",
+              "sizeGrid": "24,24,24,24,0",
+              "label": "兵营",
+              "labelSize": 36,
+              "labelAlign": "center",
+              "labelVAlign": "middle"
             },
             {
               "_$id": "ub7ia4l5",
-              "name": "CardButtonC",
               "_$type": "Button",
-              "label": "龙巢",
-              "labelSize": 36,
+              "name": "CardButtonC",
               "x": 650,
               "y": 100,
               "width": 280,
-              "height": 260
+              "height": 260,
+              "skin": "downloads/2d/card_option/CardFrame_01_White_Bg.png",
+              "sizeGrid": "24,24,24,24,0",
+              "label": "龙巢",
+              "labelSize": 36,
+              "labelAlign": "center",
+              "labelVAlign": "middle"
             }
           ]
         },
         {
           "_$id": "syrvl1kr",
-          "name": "ResultPanel",
           "_$type": "Box",
+          "name": "ResultPanel",
           "x": 80,
           "y": 600,
           "width": 920,
@@ -365,58 +716,89 @@
           "visible": false,
           "_$child": [
             {
+              "_$id": "resultpanelsample",
+              "_$type": "Image",
+              "name": "ResultPanelAssetSample",
+              "width": 920,
+              "height": 560,
+              "skin": "downloads/2d/result_panel/Popup_Box_05_Bag_Bg.png",
+              "sizeGrid": "24,24,24,24,0",
+              "color": "#ffffff"
+            },
+            {
               "_$id": "oylx98l7",
-              "name": "ResultTitle",
               "_$type": "Label",
-              "text": "领地守住了！",
-              "fontSize": 72,
-              "color": "#FFFFFF",
-              "stroke": 8,
-              "strokeColor": "#1B2E3F",
-              "x": 0,
+              "name": "ResultTitle",
               "y": 80,
               "width": 920,
               "height": 110,
-              "align": "center"
+              "text": "领地守住了！",
+              "fontSize": 72,
+              "color": "#FFFFFF",
+              "align": "center",
+              "stroke": 8,
+              "strokeColor": "#1B2E3F"
             },
             {
               "_$id": "bf3mjwpf",
-              "name": "ResultText",
               "_$type": "Label",
-              "text": "完整版解锁更多卡组与关卡",
-              "fontSize": 40,
-              "color": "#FFFFFF",
-              "stroke": 5,
-              "strokeColor": "#1B2E3F",
+              "name": "ResultText",
               "x": 40,
               "y": 210,
               "width": 840,
               "height": 80,
-              "align": "center"
+              "text": "完整版解锁更多卡组与关卡",
+              "fontSize": 40,
+              "color": "#FFFFFF",
+              "align": "center",
+              "stroke": 5,
+              "strokeColor": "#1B2E3F"
             },
             {
               "_$id": "ng9ochb5",
-              "name": "ResultCTAButton",
               "_$type": "Button",
-              "label": "立即下载",
-              "labelSize": 44,
+              "name": "ResultCTAButton",
               "x": 260,
               "y": 360,
               "width": 400,
-              "height": 110
+              "height": 110,
+              "label": "立即下载",
+              "labelSize": 44,
+              "labelAlign": "center",
+              "labelVAlign": "middle"
             }
           ]
         },
         {
           "_$id": "5bko6yzn",
-          "name": "CTAButton",
           "_$type": "Button",
-          "label": "立即下载",
-          "labelSize": 40,
+          "name": "CTAButton",
           "x": 340,
           "y": 1740,
           "width": 400,
-          "height": 110
+          "height": 110,
+          "label": "立即下载",
+          "labelSize": 40,
+          "labelAlign": "center",
+          "labelVAlign": "middle"
+        },
+        {
+          "_$id": "20cu43he",
+          "_$type": "Box",
+          "name": "UnlockCostLayer",
+          "width": 1080,
+          "height": 1920
+        },
+        {
+          "_$id": "tutorialassetsample",
+          "_$type": "Image",
+          "name": "TutorialHintAssetSample",
+          "x": 150,
+          "y": 252,
+          "width": 64,
+          "height": 64,
+          "skin": "downloads/2d/tutorial_hint/info.png",
+          "color": "#ffffff"
         }
       ]
     }

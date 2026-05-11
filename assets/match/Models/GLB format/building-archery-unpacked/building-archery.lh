@@ -1,0 +1,36 @@
+{
+  "_$ver": 1,
+  "_$id": "vpvvxy6t",
+  "_$type": "Sprite3D",
+  "name": "building-archery",
+  "_$child": [
+    {
+      "_$id": "#0",
+      "_$type": "Sprite3D",
+      "name": "building-archery",
+      "_$comp": [
+        {
+          "_$type": "MeshFilter",
+          "sharedMesh": {
+            "_$uuid": "1508d8e6-c2cd-49eb-a998-aa3f3cf453cc",
+            "_$type": "Mesh"
+          }
+        },
+        {
+          "_$type": "MeshRenderer",
+          "receiveShadow": true,
+          "castShadow": true,
+          "lightmapScaleOffset": {
+            "_$type": "Vector4"
+          },
+          "sharedMaterials": [
+            {
+              "_$uuid": "a5b83f6c-0ea7-4f4b-9b91-e7e17c1ab298",
+              "_$type": "Material"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

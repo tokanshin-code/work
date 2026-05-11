@@ -1,0 +1,36 @@
+{
+  "_$ver": 1,
+  "_$id": "gojwsacn",
+  "_$type": "Sprite3D",
+  "name": "building-wizard-tower",
+  "_$child": [
+    {
+      "_$id": "#0",
+      "_$type": "Sprite3D",
+      "name": "building-wizard-tower",
+      "_$comp": [
+        {
+          "_$type": "MeshFilter",
+          "sharedMesh": {
+            "_$uuid": "b84e5b48-817f-4b18-9649-a3de2a54998a",
+            "_$type": "Mesh"
+          }
+        },
+        {
+          "_$type": "MeshRenderer",
+          "receiveShadow": true,
+          "castShadow": true,
+          "lightmapScaleOffset": {
+            "_$type": "Vector4"
+          },
+          "sharedMaterials": [
+            {
+              "_$uuid": "15d97014-5377-43d2-8f91-906304e40d55",
+              "_$type": "Material"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

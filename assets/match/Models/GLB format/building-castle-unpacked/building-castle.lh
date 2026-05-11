@@ -1,0 +1,36 @@
+{
+  "_$ver": 1,
+  "_$id": "au065o7i",
+  "_$type": "Sprite3D",
+  "name": "building-castle",
+  "_$child": [
+    {
+      "_$id": "#0",
+      "_$type": "Sprite3D",
+      "name": "building-castle",
+      "_$comp": [
+        {
+          "_$type": "MeshFilter",
+          "sharedMesh": {
+            "_$uuid": "ffa5dd11-3c3f-4c4f-b669-015341625718",
+            "_$type": "Mesh"
+          }
+        },
+        {
+          "_$type": "MeshRenderer",
+          "receiveShadow": true,
+          "castShadow": true,
+          "lightmapScaleOffset": {
+            "_$type": "Vector4"
+          },
+          "sharedMaterials": [
+            {
+              "_$uuid": "853ff09a-3d45-4247-bac9-8f56674cf076",
+              "_$type": "Material"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

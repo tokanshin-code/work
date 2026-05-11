@@ -1,0 +1,36 @@
+{
+  "_$ver": 1,
+  "_$id": "52bs2mvb",
+  "_$type": "Sprite3D",
+  "name": "building-cabin",
+  "_$child": [
+    {
+      "_$id": "#0",
+      "_$type": "Sprite3D",
+      "name": "building-cabin",
+      "_$comp": [
+        {
+          "_$type": "MeshFilter",
+          "sharedMesh": {
+            "_$uuid": "c3af9b61-51fa-4a9d-b919-0b1682a452d4",
+            "_$type": "Mesh"
+          }
+        },
+        {
+          "_$type": "MeshRenderer",
+          "receiveShadow": true,
+          "castShadow": true,
+          "lightmapScaleOffset": {
+            "_$type": "Vector4"
+          },
+          "sharedMaterials": [
+            {
+              "_$uuid": "06dff8ff-6aac-4d24-a5c9-06049551cce5",
+              "_$type": "Material"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

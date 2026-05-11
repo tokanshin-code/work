@@ -1,0 +1,1065 @@
+{
+  "_$ver": 1,
+  "_$type": "Sprite3D",
+  "_$id": "#9",
+  "name": "RootNode",
+  "isStatic": false,
+  "layer": 0,
+  "transform": {
+    "localPosition": {
+      "_$type": "Vector3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "localRotation": {
+      "_$type": "Quaternion",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 1
+    },
+    "localScale": {
+      "_$type": "Vector3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    }
+  },
+  "_$comp": [
+    {
+      "_$type": "Animator",
+      "controllerLayers": [
+        {
+          "_$type": "AnimatorControllerLayer",
+          "name": "BaseLayer",
+          "defaultWeight": 1,
+          "blendingMode": 0,
+          "playOnWake": true,
+          "states": [
+            {
+              "_$type": "AnimatorState",
+              "name": "BaseLayer",
+              "clip": {
+                "_$uuid": "b6e52a95-2b86-46cf-85fa-c4dfb367ed36"
+              }
+            }
+          ],
+          "defaultStateName": "BaseLayer"
+        }
+      ],
+      "cullingMode": 0
+    }
+  ],
+  "_$child": [
+    {
+      "_$type": "Sprite3D",
+      "_$id": "#77",
+      "name": "Root",
+      "isStatic": false,
+      "layer": 0,
+      "transform": {
+        "localPosition": {
+          "_$type": "Vector3",
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "localRotation": {
+          "_$type": "Quaternion",
+          "x": -0.7071067690849304,
+          "y": 0,
+          "z": 0,
+          "w": 0.7071067690849304
+        },
+        "localScale": {
+          "_$type": "Vector3",
+          "x": 0.009999999776482582,
+          "y": 0.009999999776482582,
+          "z": 0.009999999776482582
+        }
+      },
+      "_$child": [
+        {
+          "_$type": "Sprite3D",
+          "_$id": "#78",
+          "name": "Bip001",
+          "isStatic": false,
+          "layer": 0,
+          "transform": {
+            "localPosition": {
+              "_$type": "Vector3",
+              "x": 0.2509235143661499,
+              "y": 1.1235512431539973e-7,
+              "z": 48.87420654296875
+            },
+            "localRotation": {
+              "_$type": "Quaternion",
+              "x": 0.12866680324077606,
+              "y": 0.09110088646411896,
+              "z": -0.7315995693206787,
+              "w": 0.6632552742958069
+            },
+            "localScale": {
+              "_$type": "Vector3",
+              "x": 1,
+              "y": 1,
+              "z": 1
+            }
+          },
+          "_$child": [
+            {
+              "_$type": "Sprite3D",
+              "_$id": "#79",
+              "name": "Bip001 Pelvis",
+              "isStatic": false,
+              "layer": 0,
+              "transform": {
+                "localPosition": {
+                  "_$type": "Vector3",
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "localRotation": {
+                  "_$type": "Quaternion",
+                  "x": -0.5,
+                  "y": -0.5,
+                  "z": -0.4999993145465851,
+                  "w": 0.5000007152557373
+                },
+                "localScale": {
+                  "_$type": "Vector3",
+                  "x": 1,
+                  "y": 1,
+                  "z": 1
+                }
+              },
+              "_$child": [
+                {
+                  "_$type": "Sprite3D",
+                  "_$id": "#80",
+                  "name": "Bip001 Spine",
+                  "isStatic": false,
+                  "layer": 0,
+                  "transform": {
+                    "localPosition": {
+                      "_$type": "Vector3",
+                      "x": 7.517234802246094,
+                      "y": 0.6590099334716797,
+                      "z": -0.015009880065917969
+                    },
+                    "localRotation": {
+                      "_$type": "Quaternion",
+                      "x": 0.32664069533348083,
+                      "y": -0.05564235895872116,
+                      "z": 0.0030776255298405886,
+                      "w": 0.943504273891449
+                    },
+                    "localScale": {
+                      "_$type": "Vector3",
+                      "x": 1,
+                      "y": 1,
+                      "z": 1
+                    }
+                  },
+                  "_$child": [
+                    {
+                      "_$type": "Sprite3D",
+                      "_$id": "#81",
+                      "name": "Bip001 Neck",
+                      "isStatic": false,
+                      "layer": 0,
+                      "transform": {
+                        "localPosition": {
+                          "_$type": "Vector3",
+                          "x": 30.612335205078125,
+                          "y": -4.971071243286133,
+                          "z": -0.000007152557373046875
+                        },
+                        "localRotation": {
+                          "_$type": "Quaternion",
+                          "x": -8.987802502247177e-9,
+                          "y": -4.6676530018885387e-7,
+                          "z": 0.17257927358150482,
+                          "w": 0.9849956035614014
+                        },
+                        "localScale": {
+                          "_$type": "Vector3",
+                          "x": 1,
+                          "y": 1,
+                          "z": 1
+                        }
+                      },
+                      "_$child": [
+                        {
+                          "_$type": "Sprite3D",
+                          "_$id": "#82",
+                          "name": "Bip001 Head",
+                          "isStatic": false,
+                          "layer": 0,
+                          "transform": {
+                            "localPosition": {
+                              "_$type": "Vector3",
+                              "x": 4.6618499755859375,
+                              "y": 0,
+                              "z": 4.76837158203125e-7
+                            },
+                            "localRotation": {
+                              "_$type": "Quaternion",
+                              "x": -0.27570194005966187,
+                              "y": 0.06741809099912643,
+                              "z": -0.19128280878067017,
+                              "w": 0.9396031498908997
+                            },
+                            "localScale": {
+                              "_$type": "Vector3",
+                              "x": 1,
+                              "y": 1,
+                              "z": 1
+                            }
+                          },
+                          "_$child": []
+                        }
+                      ]
+                    },
+                    {
+                      "_$type": "Sprite3D",
+                      "_$id": "#83",
+                      "name": "Bip001 L Clavicle",
+                      "isStatic": false,
+                      "layer": 0,
+                      "transform": {
+                        "localPosition": {
+                          "_$type": "Vector3",
+                          "x": 28.32379150390625,
+                          "y": 0.7664480209350586,
+                          "z": 2.014822006225586
+                        },
+                        "localRotation": {
+                          "_$type": "Quaternion",
+                          "x": 0.5355849266052246,
+                          "y": -0.17979590594768524,
+                          "z": 0.816715657711029,
+                          "w": -0.11746383458375931
+                        },
+                        "localScale": {
+                          "_$type": "Vector3",
+                          "x": 1,
+                          "y": 1,
+                          "z": 1
+                        }
+                      },
+                      "_$child": [
+                        {
+                          "_$type": "Sprite3D",
+                          "_$id": "#84",
+                          "name": "Bip001 L UpperArm",
+                          "isStatic": false,
+                          "layer": 0,
+                          "transform": {
+                            "localPosition": {
+                              "_$type": "Vector3",
+                              "x": 18.341278076171875,
+                              "y": -9.5367431640625e-7,
+                              "z": -1.4210854715202004e-14
+                            },
+                            "localRotation": {
+                              "_$type": "Quaternion",
+                              "x": 0.3663076162338257,
+                              "y": 0.12136758863925934,
+                              "z": -0.19420456886291504,
+                              "w": 0.9018720388412476
+                            },
+                            "localScale": {
+                              "_$type": "Vector3",
+                              "x": 1,
+                              "y": 1,
+                              "z": 1
+                            }
+                          },
+                          "_$child": [
+                            {
+                              "_$type": "Sprite3D",
+                              "_$id": "#85",
+                              "name": "Bip001 L Forearm",
+                              "isStatic": false,
+                              "layer": 0,
+                              "transform": {
+                                "localPosition": {
+                                  "_$type": "Vector3",
+                                  "x": 14.682079315185547,
+                                  "y": 0.000003814697265625,
+                                  "z": 0.000003814697265625
+                                },
+                                "localRotation": {
+                                  "_$type": "Quaternion",
+                                  "x": -2.260765884602608e-18,
+                                  "y": -4.998597516865273e-17,
+                                  "z": -0.5917272567749023,
+                                  "w": 0.8061382174491882
+                                },
+                                "localScale": {
+                                  "_$type": "Vector3",
+                                  "x": 1,
+                                  "y": 1,
+                                  "z": 1
+                                }
+                              },
+                              "_$child": [
+                                {
+                                  "_$type": "Sprite3D",
+                                  "_$id": "#86",
+                                  "name": "Bip001 L Hand",
+                                  "isStatic": false,
+                                  "layer": 0,
+                                  "transform": {
+                                    "localPosition": {
+                                      "_$type": "Vector3",
+                                      "x": 17.654560089111328,
+                                      "y": -1.7763568394002505e-15,
+                                      "z": -0.000003814697265625
+                                    },
+                                    "localRotation": {
+                                      "_$type": "Quaternion",
+                                      "x": -0.6869661211967468,
+                                      "y": 0.0059079816564917564,
+                                      "z": 0.06335558742284775,
+                                      "w": 0.7238982319831848
+                                    },
+                                    "localScale": {
+                                      "_$type": "Vector3",
+                                      "x": 1,
+                                      "y": 1,
+                                      "z": 1
+                                    }
+                                  },
+                                  "_$child": [
+                                    {
+                                      "_$type": "Sprite3D",
+                                      "_$id": "#87",
+                                      "name": "Bip001 L Finger0",
+                                      "isStatic": false,
+                                      "layer": 0,
+                                      "transform": {
+                                        "localPosition": {
+                                          "_$type": "Vector3",
+                                          "x": -0.4073677062988281,
+                                          "y": 1.1494026184082031,
+                                          "z": -3.747800827026367
+                                        },
+                                        "localRotation": {
+                                          "_$type": "Quaternion",
+                                          "x": 0.47299203276634216,
+                                          "y": 0.5297642350196838,
+                                          "z": 0.01123245432972908,
+                                          "w": 0.7039192318916321
+                                        },
+                                        "localScale": {
+                                          "_$type": "Vector3",
+                                          "x": 1,
+                                          "y": 1,
+                                          "z": 1
+                                        }
+                                      },
+                                      "_$child": [
+                                        {
+                                          "_$type": "Sprite3D",
+                                          "_$id": "#88",
+                                          "name": "Bip001 L Finger01",
+                                          "isStatic": false,
+                                          "layer": 0,
+                                          "transform": {
+                                            "localPosition": {
+                                              "_$type": "Vector3",
+                                              "x": 5.151607513427734,
+                                              "y": -7.105427357601002e-15,
+                                              "z": 9.5367431640625e-7
+                                            },
+                                            "localRotation": {
+                                              "_$type": "Quaternion",
+                                              "x": -7.219863107366109e-8,
+                                              "y": 1.3112655850022747e-8,
+                                              "z": 0.23630701005458832,
+                                              "w": 0.9716784358024597
+                                            },
+                                            "localScale": {
+                                              "_$type": "Vector3",
+                                              "x": 1,
+                                              "y": 1,
+                                              "z": 1
+                                            }
+                                          },
+                                          "_$child": []
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "_$type": "Sprite3D",
+                                      "_$id": "#89",
+                                      "name": "Hand_L",
+                                      "isStatic": false,
+                                      "layer": 0,
+                                      "transform": {
+                                        "localPosition": {
+                                          "_$type": "Vector3",
+                                          "x": 3.6683502197265625,
+                                          "y": 6.290752410888672,
+                                          "z": 13.48902416229248
+                                        },
+                                        "localRotation": {
+                                          "_$type": "Quaternion",
+                                          "x": -0.5659658908843994,
+                                          "y": 0.3853149116039276,
+                                          "z": -0.49762120842933655,
+                                          "w": 0.5325299501419067
+                                        },
+                                        "localScale": {
+                                          "_$type": "Vector3",
+                                          "x": 1,
+                                          "y": 1,
+                                          "z": 1
+                                        }
+                                      },
+                                      "_$child": []
+                                    },
+                                    {
+                                      "_$type": "Sprite3D",
+                                      "_$id": "#90",
+                                      "name": "Bip001 L Finger1",
+                                      "isStatic": false,
+                                      "layer": 0,
+                                      "transform": {
+                                        "localPosition": {
+                                          "_$type": "Vector3",
+                                          "x": 4.9567413330078125,
+                                          "y": -1.4556541442871094,
+                                          "z": -4.522381782531738
+                                        },
+                                        "localRotation": {
+                                          "_$type": "Quaternion",
+                                          "x": -0.006666592787951231,
+                                          "y": 0.16885460913181305,
+                                          "z": 0.3256947100162506,
+                                          "w": 0.9302508234977722
+                                        },
+                                        "localScale": {
+                                          "_$type": "Vector3",
+                                          "x": 1,
+                                          "y": 1,
+                                          "z": 1
+                                        }
+                                      },
+                                      "_$child": [
+                                        {
+                                          "_$type": "Sprite3D",
+                                          "_$id": "#91",
+                                          "name": "Bip001 L Finger11",
+                                          "isStatic": false,
+                                          "layer": 0,
+                                          "transform": {
+                                            "localPosition": {
+                                              "_$type": "Vector3",
+                                              "x": 4.653667449951172,
+                                              "y": -0.0000019073486328125,
+                                              "z": -0.0000019073486328125
+                                            },
+                                            "localRotation": {
+                                              "_$type": "Quaternion",
+                                              "x": -5.867254770919317e-8,
+                                              "y": 2.3544311389400718e-8,
+                                              "z": 0.3929027020931244,
+                                              "w": 0.9195800423622131
+                                            },
+                                            "localScale": {
+                                              "_$type": "Vector3",
+                                              "x": 1,
+                                              "y": 1,
+                                              "z": 1
+                                            }
+                                          },
+                                          "_$child": []
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "_$type": "Sprite3D",
+                                      "_$id": "#92",
+                                      "name": "Bip001 L Finger2",
+                                      "isStatic": false,
+                                      "layer": 0,
+                                      "transform": {
+                                        "localPosition": {
+                                          "_$type": "Vector3",
+                                          "x": 5.257999420166016,
+                                          "y": -0.18447113037109375,
+                                          "z": 1.3382806777954102
+                                        },
+                                        "localRotation": {
+                                          "_$type": "Quaternion",
+                                          "x": -0.10942810773849487,
+                                          "y": 0.0465204231441021,
+                                          "z": 0.43285074830055237,
+                                          "w": 0.8935891389846802
+                                        },
+                                        "localScale": {
+                                          "_$type": "Vector3",
+                                          "x": 1,
+                                          "y": 1,
+                                          "z": 1
+                                        }
+                                      },
+                                      "_$child": [
+                                        {
+                                          "_$type": "Sprite3D",
+                                          "_$id": "#93",
+                                          "name": "Bip001 L Finger21",
+                                          "isStatic": false,
+                                          "layer": 0,
+                                          "transform": {
+                                            "localPosition": {
+                                              "_$type": "Vector3",
+                                              "x": 4.279598236083984,
+                                              "y": 5.995204332975845e-15,
+                                              "z": -9.5367431640625e-7
+                                            },
+                                            "localRotation": {
+                                              "_$type": "Quaternion",
+                                              "x": 8.247968530383787e-9,
+                                              "y": -1.6700772320632495e-8,
+                                              "z": 0.4428093731403351,
+                                              "w": 0.8966158032417297
+                                            },
+                                            "localScale": {
+                                              "_$type": "Vector3",
+                                              "x": 1,
+                                              "y": 1,
+                                              "z": 1
+                                            }
+                                          },
+                                          "_$child": []
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "_$type": "Sprite3D",
+                      "_$id": "#94",
+                      "name": "Bip001 R Clavicle",
+                      "isStatic": false,
+                      "layer": 0,
+                      "transform": {
+                        "localPosition": {
+                          "_$type": "Vector3",
+                          "x": 28.32378387451172,
+                          "y": 0.7664604187011719,
+                          "z": -2.014817714691162
+                        },
+                        "localRotation": {
+                          "_$type": "Quaternion",
+                          "x": -0.5731082558631897,
+                          "y": -0.08029597252607346,
+                          "z": 0.8135387301445007,
+                          "w": 0.057045500725507736
+                        },
+                        "localScale": {
+                          "_$type": "Vector3",
+                          "x": 1,
+                          "y": 1,
+                          "z": 1
+                        }
+                      },
+                      "_$child": [
+                        {
+                          "_$type": "Sprite3D",
+                          "_$id": "#95",
+                          "name": "Bip001 R UpperArm",
+                          "isStatic": false,
+                          "layer": 0,
+                          "transform": {
+                            "localPosition": {
+                              "_$type": "Vector3",
+                              "x": 18.34128189086914,
+                              "y": 0.0000019073486328125,
+                              "z": 0
+                            },
+                            "localRotation": {
+                              "_$type": "Quaternion",
+                              "x": 0.15432019531726837,
+                              "y": -0.4946751594543457,
+                              "z": -0.23300312459468842,
+                              "w": 0.8229163289070129
+                            },
+                            "localScale": {
+                              "_$type": "Vector3",
+                              "x": 1,
+                              "y": 1,
+                              "z": 1
+                            }
+                          },
+                          "_$child": [
+                            {
+                              "_$type": "Sprite3D",
+                              "_$id": "#96",
+                              "name": "Bip001 R Forearm",
+                              "isStatic": false,
+                              "layer": 0,
+                              "transform": {
+                                "localPosition": {
+                                  "_$type": "Vector3",
+                                  "x": 14.682079315185547,
+                                  "y": 0,
+                                  "z": 3.552713678800501e-15
+                                },
+                                "localRotation": {
+                                  "_$type": "Quaternion",
+                                  "x": -5.7763879195053104e-18,
+                                  "y": 3.844683788358188e-18,
+                                  "z": -0.5540773272514343,
+                                  "w": 0.8324652314186096
+                                },
+                                "localScale": {
+                                  "_$type": "Vector3",
+                                  "x": 1,
+                                  "y": 1,
+                                  "z": 1
+                                }
+                              },
+                              "_$child": [
+                                {
+                                  "_$type": "Sprite3D",
+                                  "_$id": "#97",
+                                  "name": "Bip001 R Hand",
+                                  "isStatic": false,
+                                  "layer": 0,
+                                  "transform": {
+                                    "localPosition": {
+                                      "_$type": "Vector3",
+                                      "x": 17.654556274414062,
+                                      "y": -0.000003814697265625,
+                                      "z": 0
+                                    },
+                                    "localRotation": {
+                                      "_$type": "Quaternion",
+                                      "x": 0.952726423740387,
+                                      "y": -0.04991476982831955,
+                                      "z": 0.19277328252792358,
+                                      "w": 0.2294762134552002
+                                    },
+                                    "localScale": {
+                                      "_$type": "Vector3",
+                                      "x": 1,
+                                      "y": 1,
+                                      "z": 1
+                                    }
+                                  },
+                                  "_$child": [
+                                    {
+                                      "_$type": "Sprite3D",
+                                      "_$id": "#98",
+                                      "name": "Bip001 R Finger0",
+                                      "isStatic": false,
+                                      "layer": 0,
+                                      "transform": {
+                                        "localPosition": {
+                                          "_$type": "Vector3",
+                                          "x": -0.4073677062988281,
+                                          "y": 1.1494026184082031,
+                                          "z": 3.7477951049804688
+                                        },
+                                        "localRotation": {
+                                          "_$type": "Quaternion",
+                                          "x": -0.4871295392513275,
+                                          "y": -0.5065744519233704,
+                                          "z": 0.018168587237596512,
+                                          "w": 0.7111659646034241
+                                        },
+                                        "localScale": {
+                                          "_$type": "Vector3",
+                                          "x": 1,
+                                          "y": 1,
+                                          "z": 1
+                                        }
+                                      },
+                                      "_$child": [
+                                        {
+                                          "_$type": "Sprite3D",
+                                          "_$id": "#99",
+                                          "name": "Bip001 R Finger01",
+                                          "isStatic": false,
+                                          "layer": 0,
+                                          "transform": {
+                                            "localPosition": {
+                                              "_$type": "Vector3",
+                                              "x": 5.151611328125,
+                                              "y": 0.00000286102294921875,
+                                              "z": 0.0000057220458984375
+                                            },
+                                            "localRotation": {
+                                              "_$type": "Quaternion",
+                                              "x": 8.024292696973134e-8,
+                                              "y": 6.048445633233257e-10,
+                                              "z": 0.3783784806728363,
+                                              "w": 0.925650954246521
+                                            },
+                                            "localScale": {
+                                              "_$type": "Vector3",
+                                              "x": 1,
+                                              "y": 1,
+                                              "z": 1
+                                            }
+                                          },
+                                          "_$child": []
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "_$type": "Sprite3D",
+                                      "_$id": "#100",
+                                      "name": "Hand_R",
+                                      "isStatic": false,
+                                      "layer": 0,
+                                      "transform": {
+                                        "localPosition": {
+                                          "_$type": "Vector3",
+                                          "x": 0.0000019073486328125,
+                                          "y": 0,
+                                          "z": 0
+                                        },
+                                        "localRotation": {
+                                          "_$type": "Quaternion",
+                                          "x": -1.0390993621101074e-15,
+                                          "y": 1.955777406692505e-8,
+                                          "z": 5.029141902923584e-8,
+                                          "w": 1
+                                        },
+                                        "localScale": {
+                                          "_$type": "Vector3",
+                                          "x": 1,
+                                          "y": 1,
+                                          "z": 1
+                                        }
+                                      },
+                                      "_$child": []
+                                    },
+                                    {
+                                      "_$type": "Sprite3D",
+                                      "_$id": "#101",
+                                      "name": "Bip001 R Finger1",
+                                      "isStatic": false,
+                                      "layer": 0,
+                                      "transform": {
+                                        "localPosition": {
+                                          "_$type": "Vector3",
+                                          "x": 4.956747055053711,
+                                          "y": -1.4556541442871094,
+                                          "z": 4.5223846435546875
+                                        },
+                                        "localRotation": {
+                                          "_$type": "Quaternion",
+                                          "x": -0.002329346491023898,
+                                          "y": -0.07541624456644058,
+                                          "z": 0.4993639290332794,
+                                          "w": 0.8631005883216858
+                                        },
+                                        "localScale": {
+                                          "_$type": "Vector3",
+                                          "x": 1,
+                                          "y": 1,
+                                          "z": 1
+                                        }
+                                      },
+                                      "_$child": [
+                                        {
+                                          "_$type": "Sprite3D",
+                                          "_$id": "#102",
+                                          "name": "Bip001 R Finger11",
+                                          "isStatic": false,
+                                          "layer": 0,
+                                          "transform": {
+                                            "localPosition": {
+                                              "_$type": "Vector3",
+                                              "x": 4.653667449951172,
+                                              "y": -0.000003814697265625,
+                                              "z": 7.105427357601002e-15
+                                            },
+                                            "localRotation": {
+                                              "_$type": "Quaternion",
+                                              "x": 3.816994720295952e-8,
+                                              "y": -3.2265401017639306e-8,
+                                              "z": 0.39437195658683777,
+                                              "w": 0.9189509153366089
+                                            },
+                                            "localScale": {
+                                              "_$type": "Vector3",
+                                              "x": 1,
+                                              "y": 1,
+                                              "z": 1
+                                            }
+                                          },
+                                          "_$child": []
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "_$type": "Sprite3D",
+                                      "_$id": "#103",
+                                      "name": "Bip001 R Finger2",
+                                      "isStatic": false,
+                                      "layer": 0,
+                                      "transform": {
+                                        "localPosition": {
+                                          "_$type": "Vector3",
+                                          "x": 5.257997512817383,
+                                          "y": -0.18447113037109375,
+                                          "z": -1.3382797241210938
+                                        },
+                                        "localRotation": {
+                                          "_$type": "Quaternion",
+                                          "x": 0.041796062141656876,
+                                          "y": 0.011019774712622166,
+                                          "z": 0.5217486023902893,
+                                          "w": 0.8520035147666931
+                                        },
+                                        "localScale": {
+                                          "_$type": "Vector3",
+                                          "x": 1,
+                                          "y": 1,
+                                          "z": 1
+                                        }
+                                      },
+                                      "_$child": [
+                                        {
+                                          "_$type": "Sprite3D",
+                                          "_$id": "#104",
+                                          "name": "Bip001 R Finger21",
+                                          "isStatic": false,
+                                          "layer": 0,
+                                          "transform": {
+                                            "localPosition": {
+                                              "_$type": "Vector3",
+                                              "x": 4.279598236083984,
+                                              "y": -0.0000019073486328125,
+                                              "z": 0
+                                            },
+                                            "localRotation": {
+                                              "_$type": "Quaternion",
+                                              "x": 6.52657350386221e-9,
+                                              "y": 2.003729093758011e-8,
+                                              "z": 0.4533444344997406,
+                                              "w": 0.8913354277610779
+                                            },
+                                            "localScale": {
+                                              "_$type": "Vector3",
+                                              "x": 1,
+                                              "y": 1,
+                                              "z": 1
+                                            }
+                                          },
+                                          "_$child": []
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "_$type": "Sprite3D",
+                  "_$id": "#105",
+                  "name": "Bip001 L Thigh",
+                  "isStatic": false,
+                  "layer": 0,
+                  "transform": {
+                    "localPosition": {
+                      "_$type": "Vector3",
+                      "x": -0.000011444091796875,
+                      "y": 0.00001430511474609375,
+                      "z": 9.139562606811523
+                    },
+                    "localRotation": {
+                      "_$type": "Quaternion",
+                      "x": 0.3767012655735016,
+                      "y": 0.9233596324920654,
+                      "z": 0.06685036420822144,
+                      "w": 0.03215787559747696
+                    },
+                    "localScale": {
+                      "_$type": "Vector3",
+                      "x": 1,
+                      "y": 1,
+                      "z": 1
+                    }
+                  },
+                  "_$child": [
+                    {
+                      "_$type": "Sprite3D",
+                      "_$id": "#106",
+                      "name": "Bip001 L Calf",
+                      "isStatic": false,
+                      "layer": 0,
+                      "transform": {
+                        "localPosition": {
+                          "_$type": "Vector3",
+                          "x": 24.243303298950195,
+                          "y": 0,
+                          "z": 4.76837158203125e-7
+                        },
+                        "localRotation": {
+                          "_$type": "Quaternion",
+                          "x": 5.310771468216814e-19,
+                          "y": 2.6579685021735275e-18,
+                          "z": -0.19593288004398346,
+                          "w": 0.9806172847747803
+                        },
+                        "localScale": {
+                          "_$type": "Vector3",
+                          "x": 1,
+                          "y": 1,
+                          "z": 1
+                        }
+                      },
+                      "_$child": [
+                        {
+                          "_$type": "Sprite3D",
+                          "_$id": "#107",
+                          "name": "Bip001 L Foot",
+                          "isStatic": false,
+                          "layer": 0,
+                          "transform": {
+                            "localPosition": {
+                              "_$type": "Vector3",
+                              "x": 22.086429595947266,
+                              "y": 1.7763568394002505e-15,
+                              "z": 4.76837158203125e-7
+                            },
+                            "localRotation": {
+                              "_$type": "Quaternion",
+                              "x": 0.03468962758779526,
+                              "y": 0.015294264070689678,
+                              "z": -0.03381829336285591,
+                              "w": 0.9987086653709412
+                            },
+                            "localScale": {
+                              "_$type": "Vector3",
+                              "x": 1,
+                              "y": 1,
+                              "z": 1
+                            }
+                          },
+                          "_$child": []
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "_$type": "Sprite3D",
+                  "_$id": "#108",
+                  "name": "Bip001 R Thigh",
+                  "isStatic": false,
+                  "layer": 0,
+                  "transform": {
+                    "localPosition": {
+                      "_$type": "Vector3",
+                      "x": 0.000011444091796875,
+                      "y": -0.00001049041748046875,
+                      "z": -9.139562606811523
+                    },
+                    "localRotation": {
+                      "_$type": "Quaternion",
+                      "x": -0.0377684123814106,
+                      "y": 0.9983818531036377,
+                      "z": 0.018112944439053535,
+                      "w": 0.03845930099487305
+                    },
+                    "localScale": {
+                      "_$type": "Vector3",
+                      "x": 1,
+                      "y": 1,
+                      "z": 1
+                    }
+                  },
+                  "_$child": [
+                    {
+                      "_$type": "Sprite3D",
+                      "_$id": "#109",
+                      "name": "Bip001 R Calf",
+                      "isStatic": false,
+                      "layer": 0,
+                      "transform": {
+                        "localPosition": {
+                          "_$type": "Vector3",
+                          "x": 24.243303298950195,
+                          "y": -0.0000019073486328125,
+                          "z": 0
+                        },
+                        "localRotation": {
+                          "_$type": "Quaternion",
+                          "x": -9.125184375263471e-18,
+                          "y": -1.3201356932791309e-18,
+                          "z": -0.6505388021469116,
+                          "w": 0.7594730257987976
+                        },
+                        "localScale": {
+                          "_$type": "Vector3",
+                          "x": 1,
+                          "y": 1,
+                          "z": 1
+                        }
+                      },
+                      "_$child": [
+                        {
+                          "_$type": "Sprite3D",
+                          "_$id": "#110",
+                          "name": "Bip001 R Foot",
+                          "isStatic": false,
+                          "layer": 0,
+                          "transform": {
+                            "localPosition": {
+                              "_$type": "Vector3",
+                              "x": 22.08643341064453,
+                              "y": 0,
+                              "z": 9.5367431640625e-7
+                            },
+                            "localRotation": {
+                              "_$type": "Quaternion",
+                              "x": -0.03346049040555954,
+                              "y": -0.017497245222330093,
+                              "z": -0.03983139991760254,
+                              "w": 0.9984927177429199
+                            },
+                            "localScale": {
+                              "_$type": "Vector3",
+                              "x": 1,
+                              "y": 1,
+                              "z": 1
+                            }
+                          },
+                          "_$child": []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

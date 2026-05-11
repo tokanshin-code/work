@@ -49,3 +49,16 @@
 | v11 | 2026-05-11 | 修正开局默认建筑显示和首次点击门槛，开局只保留色块，首次点击后激活双方真实建筑 | `src/game/HexGameController.ts`, `src/data/HexRules.ts`, `.temp/hex-rules.test.mjs`, `.temp/start-flow-source.test.mjs` | ✅ 完成 |
 | v12 | 2026-05-11 | 按参考图保持稳定正交俯视、改用显式相机欧拉角、修正 Scene3D 查找并放大棋盘画面占比 | `src/game/HexGameController.ts`, `.temp/camera-angle.test.mjs`, `doc/output/requirements.md` | ✅ 完成 |
 | v13 | 2026-05-11 | 将卡牌改为成功点击解锁地块后触发，并保证首次解锁立即提供一次三选一 | `src/game/HexGameController.ts`, `.temp/card-trigger-source.test.mjs`, `doc/output/requirements.md` | ✅ 完成 |
+| v14 | 2026-05-11 | 执行资源对标：用本地 Kenney hexagon kit 替换箭塔、兵营、基地、六边形地块和龙巢等未锁定资源，并补充下载 UI 面板素材 | `doc/output/resource_list.json`, `assets/match/`, `assets/downloads/2d/`, `assets/Scene.ls` | ✅ 完成 |
+| v15 | 2026-05-11 | 修复运行时层级资源实例化并切换为斜俯视透视镜头，增强模型可见性与 3D 纵深 | `src/game/HexGameController.ts`, `assets/Scene.ls`, `doc/output/resource_list.json`, `.temp/model-visibility-source.test.mjs` | ✅ 完成 |
+| v16 | 2026-05-11 | 隐藏卡牌面板编辑器样例图，移除左上角白色占位块，并将卡牌标题本地化为“选择一项升级” | `src/game/HexGameController.ts`, `.temp/card-panel-ui.test.mjs` | ✅ 完成 |
+| v16 | 2026-05-11 | 改为编辑器层级方案：新增默认可点地格标记、初始建筑槽和解锁费用层，限制模型单格尺寸并强化光照表现 | `assets/Scene.ls`, `doc/output/hex-editor-hierarchy.game.json`, `src/game/HexGameController.ts`, `.temp/editor-hierarchy-flow.test.mjs`, `doc/output/requirements.md` | ✅ 完成 |
+| v17 | 2026-05-11 | 修复加载模型颜色不受控：实例化 prefab 后统一覆盖 `sharedMaterial`/`sharedMaterials` 为阵营和建筑对应的可读 Unlit 材质 | `src/game/HexGameController.ts`, `.temp/model-color-override.test.mjs`, `MEMORY.md` | ✅ 完成 |
+| v18 | 2026-05-11 | 修正模型高度、金币费用投影和图标显示、CTA 结算显示，并为六边形地块增加侧面阴影与解锁翻转反馈 | `src/game/HexGameController.ts`, `.temp/hex-visual-interaction-fixes.test.mjs`, `doc/output/requirements.md`, `MEMORY.md` | ✅ 完成 |
+| v19 | 2026-05-11 | 修复 FBX 替换后模型比例失效：实例化后按渲染包围盒自适应地格 footprint，避免沿用旧 `.lh` 固定缩放 | `src/game/HexGameController.ts`, `.temp/model-scale-adaptation.test.mjs`, `doc/output/requirements.md`, `MEMORY.md` | ✅ 完成 |
+| v20 | 2026-05-11 | 增加可在 Inspector 手动调整的模型比例参数，并在场景中放置建筑/士兵/Boss 比例样例节点供编辑器观察 | `src/game/HexGameController.ts`, `assets/Scene.ls`, `doc/output/manual-model-scale-samples.game.json`, `.temp/manual-model-scale-controls.test.mjs` | ✅ 完成 |
+| v21 | 2026-05-11 | 将基地改为地块底座+建筑模型组合，并拆分基地建筑、箭塔、兵营、龙巢、士兵和 Boss 的独立缩放参数 | `src/game/HexGameController.ts`, `assets/Scene.ls`, `.temp/base-composite-scale-controls.test.mjs`, `doc/output/requirements.md`, `MEMORY.md` | ✅ 完成 |
+| v22 | 2026-05-11 | 补齐编辑器分层资源样例：建筑/单位资源分组展示，并在 WaterLayer 中添加水面贴片样例 | `assets/Scene.ls`, `src/game/HexGameController.ts`, `doc/output/editor-resource-samples.game.json`, `.temp/editor-resource-samples.test.mjs` | ✅ 完成 |
+| v18 | 2026-05-11 | 执行资源对标：用本地定制试玩减面资产替换士兵、怪物、箭塔、兵营、基地、龙巢和火焰反馈等未锁定资源，并跳过外网下载 | `doc/output/resource_list.json`, `assets/match/`, `assets/Scene.ls`, `MEMORY.md` | ✅ 完成 |
+| v22 | 2026-05-11 | 开局直接弹三选一建筑卡，选择后在初始绿色地块生成建筑，并改为点击金币费用解锁相邻地块 | `src/game/HexGameController.ts`, `.temp/opening-card-unlock-flow.test.mjs`, `.temp/card-trigger-source.test.mjs`, `.temp/start-flow-source.test.mjs`, `doc/output/requirements.md`, `MEMORY.md` | ✅ 完成 |
+| v23 | 2026-05-11 | 解锁新地块后再次弹三选一建筑卡，并把选择的建筑部署到刚解锁的绿色地块 | `src/game/HexGameController.ts`, `.temp/opening-card-unlock-flow.test.mjs`, `.temp/card-trigger-source.test.mjs`, `doc/output/requirements.md`, `MEMORY.md` | ✅ 完成 |
