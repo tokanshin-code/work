@@ -1,0 +1,25 @@
+{
+  "modules": {
+    "laya.ui": true,
+    "laya.d3": true,
+    "LayaIdeaRuntime": true,
+    "laya.particle3D": true,
+    "laya.postProcess": true,
+    "laya.physics3D": true,
+    "laya.navMesh": true,
+    "laya.trail3D": true,
+    "laya.blueprint": true
+  },
+  "resolution": {
+    "designWidth": 1080,
+    "designHeight": 1920,
+    "scaleMode": "showall",
+    "alignV": "middle",
+    "alignH": "center",
+    "screenMode": "vertical",
+    "backgroundColor": "#16b5f0"
+  },
+  "splash": {
+    "fit": "center"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "version": "LAYAMATERIAL:04",
+  "props": {
+    "type": "PARTICLESHURIKEN",
+    "textures": [
+      {
+        "path": "../texture/19.png",
+        "constructParams": [
+          200,
+          200,
+          1,
+          false
+        ],
+        "propertyParams": {
+          "filterMode": 1,
+          "wrapModeU": 1,
+          "wrapModeV": 1,
+          "anisoLevel": 1
+        },
+        "name": "u_texture"
+      }
+    ],
+    "renderQueue": 3000,
+    "materialRenderMode": 0,
+    "u_AlphaTestValue": 0.5,
+    "s_Cull": 0,
+    "s_Blend": 1,
+    "s_BlendSrc": 6,
+    "s_BlendDst": 7,
+    "s_DepthTest": 1,
+    "s_DepthWrite": false,
+    "u_TilingOffset": [
+      1,
+      1,
+      0,
+      0
+    ],
+    "u_Tintcolor": [
+      0.5019608,
+      0.5019608,
+      0.5019608,
+      0.5019608
+    ],
+    "defines": [
+      "DIFFUSEMAP",
+      "TINTCOLOR"
+    ]
+  }
+}

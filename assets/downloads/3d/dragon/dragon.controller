@@ -1,0 +1,82 @@
+{
+  "_$type": "Animator",
+  "enabled": true,
+  "path": "",
+  "cullingMode": 2,
+  "controllerLayers": [
+    {
+      "name": "Base Layer",
+      "states": [
+        {
+          "x": 10,
+          "y": 100,
+          "id": "-1",
+          "name": "进入",
+          "soloTransitions": [
+            {
+              "id": "0",
+              "exitByTime": true,
+              "transduration": 0.15,
+              "exitTime": 0.85
+            }
+          ]
+        },
+        {
+          "x": 550,
+          "y": 100,
+          "id": "-2",
+          "name": "任何状态"
+        },
+        {
+          "x": 400,
+          "y": 200,
+          "loopState": 0,
+          "_isLooping": 1,
+          "id": "0",
+          "name": "idle",
+          "speed": 1,
+          "clipStart": 0,
+          "clipEnd": 1,
+          "clip": {
+            "_$uuid": "7c9be6f0-84a6-4d7f-839f-aa7f694230ce"
+          }
+        },
+        {
+          "x": 550,
+          "y": 200,
+          "loopState": 0,
+          "_isLooping": 1,
+          "id": "1",
+          "name": "run",
+          "speed": 1,
+          "clipStart": 0,
+          "clipEnd": 1,
+          "clip": {
+            "_$uuid": "12a1b8ca-5550-41e8-83f3-3d7d0280ed41"
+          }
+        },
+        {
+          "x": 400,
+          "y": 320,
+          "loopState": 0,
+          "_isLooping": 1,
+          "id": "2",
+          "name": "attack",
+          "speed": 1,
+          "clipStart": 0,
+          "clipEnd": 1,
+          "clip": {
+            "_$uuid": "86deab38-23c8-42c1-ac29-d9cff9344972"
+          }
+        }
+      ],
+      "playOnWake": true,
+      "blendingMode": 0,
+      "defaultWeight": 1,
+      "stageX": 109,
+      "stageY": 110,
+      "stageScale": 1
+    }
+  ],
+  "layerW": 150
+}

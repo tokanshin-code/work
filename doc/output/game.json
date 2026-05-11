@@ -1,0 +1,27 @@
+{
+  "commands": [
+    { "cmd": "createNode", "parent": "Scene3D", "name": "HexBoard", "type": "Sprite3D" },
+    { "cmd": "createNode", "parent": "Scene3D", "name": "Bases", "type": "Sprite3D" },
+    { "cmd": "createNode", "parent": "Scene3D", "name": "Buildings", "type": "Sprite3D" },
+    { "cmd": "createNode", "parent": "Scene3D", "name": "Units", "type": "Sprite3D" },
+    { "cmd": "createNode", "parent": "Bases", "name": "PlayerBase", "prefab": "downloads/3d/base/SM_Prop_BaseWall_01.lh", "position": [0, 0.15, 6.6], "scale": [1.4, 1.4, 1.4] },
+    { "cmd": "createNode", "parent": "Bases", "name": "EnemyBase", "prefab": "downloads/3d/base/SM_Prop_BaseWall_01.lh", "position": [0, 0.15, -6.6], "scale": [1.4, 1.4, 1.4] },
+    { "cmd": "createNode", "parent": "Scene2D", "name": "GameUIRoot", "type": "Box", "props": { "width": 1080, "height": 1920 } },
+    { "cmd": "createNode", "parent": "GameUIRoot", "name": "TimerLabel", "type": "Label", "props": { "text": "80", "fontSize": 54, "color": "#FFFFFF", "stroke": 5, "strokeColor": "#243447", "x": 48, "y": 36, "width": 220, "height": 80 } },
+    { "cmd": "createNode", "parent": "GameUIRoot", "name": "MoneyLabel", "type": "Label", "props": { "text": "20", "fontSize": 48, "color": "#FFE46B", "stroke": 5, "strokeColor": "#3A2500", "x": 820, "y": 42, "width": 220, "height": 72, "align": "right" } },
+    { "cmd": "createNode", "parent": "GameUIRoot", "name": "HintLabel", "type": "Label", "props": { "text": "点击相邻地块扩张领地", "fontSize": 48, "color": "#FFFFFF", "stroke": 6, "strokeColor": "#13231A", "x": 120, "y": 240, "width": 840, "height": 90, "align": "center" } },
+    { "cmd": "createNode", "parent": "GameUIRoot", "name": "CardChoicePanel", "type": "Box", "props": { "x": 60, "y": 1080, "width": 960, "height": 420, "visible": false } },
+    { "cmd": "createNode", "parent": "CardChoicePanel", "name": "CardTitle", "type": "Label", "props": { "text": "选择一张卡牌强化防线", "fontSize": 44, "color": "#FFFFFF", "stroke": 5, "strokeColor": "#1D2733", "x": 0, "y": 0, "width": 960, "height": 80, "align": "center" } },
+    { "cmd": "createNode", "parent": "CardChoicePanel", "name": "CardButtonA", "type": "Button", "props": { "label": "箭塔", "labelSize": 36, "x": 30, "y": 100, "width": 280, "height": 260 } },
+    { "cmd": "createNode", "parent": "CardChoicePanel", "name": "CardButtonB", "type": "Button", "props": { "label": "兵营", "labelSize": 36, "x": 340, "y": 100, "width": 280, "height": 260 } },
+    { "cmd": "createNode", "parent": "CardChoicePanel", "name": "CardButtonC", "type": "Button", "props": { "label": "龙巢", "labelSize": 36, "x": 650, "y": 100, "width": 280, "height": 260 } },
+    { "cmd": "createNode", "parent": "GameUIRoot", "name": "ResultPanel", "type": "Box", "props": { "x": 80, "y": 600, "width": 920, "height": 560, "visible": false } },
+    { "cmd": "createNode", "parent": "ResultPanel", "name": "ResultTitle", "type": "Label", "props": { "text": "领地守住了！", "fontSize": 72, "color": "#FFFFFF", "stroke": 8, "strokeColor": "#1B2E3F", "x": 0, "y": 80, "width": 920, "height": 110, "align": "center" } },
+    { "cmd": "createNode", "parent": "ResultPanel", "name": "ResultText", "type": "Label", "props": { "text": "完整版解锁更多卡组与关卡", "fontSize": 40, "color": "#FFFFFF", "stroke": 5, "strokeColor": "#1B2E3F", "x": 40, "y": 210, "width": 840, "height": 80, "align": "center" } },
+    { "cmd": "createNode", "parent": "ResultPanel", "name": "ResultCTAButton", "type": "Button", "props": { "label": "立即下载", "labelSize": 44, "x": 260, "y": 360, "width": 400, "height": 110 } },
+    { "cmd": "createNode", "parent": "GameUIRoot", "name": "CTAButton", "type": "Button", "props": { "label": "立即下载", "labelSize": 40, "x": 340, "y": 1740, "width": 400, "height": 110 } },
+    { "cmd": "waitAssetBusy" },
+    { "cmd": "mountScript", "script": "src/game/HexGameController.ts", "node": "HexBoard", "bind": { "hexBoard": "@HexBoard", "basesRoot": "@Bases", "buildingsRoot": "@Buildings", "unitsRoot": "@Units", "uiRoot": "@GameUIRoot", "timerLabel": "@TimerLabel", "moneyLabel": "@MoneyLabel", "hintLabel": "@HintLabel", "cardPanel": "@CardChoicePanel", "cardButtonA": "@CardButtonA", "cardButtonB": "@CardButtonB", "cardButtonC": "@CardButtonC", "resultPanel": "@ResultPanel", "resultTitle": "@ResultTitle", "resultText": "@ResultText", "ctaButton": "@CTAButton", "resultCtaButton": "@ResultCTAButton", "playerBase": "@PlayerBase", "enemyBase": "@EnemyBase", "soldierPrefabPath": "downloads/3d/soldier/Role_taikong_01.lh", "dragonPrefabPath": "downloads/3d/dragon/Role_xiaohuangya_01.lh", "towerPrefabPath": "downloads/3d/tower/SM_Prop_GuardTower_01.lh", "barracksPrefabPath": "downloads/3d/barracks/SM_Bld_Military_Tent_03.lh", "fireEffectPath": "downloads/3d/effects/FLame_red.lh", "hitSoundPath": "downloads/2d/sfx/afedc1f409ba5418cc3ff2d6fdc64eca.mp3", "bgmPath": "downloads/2d/bgm/f93f9377dcad12be63b55fcad314858d.mp3", "initialMoney": 20, "hexCost": 25, "timerCount": 80, "incomeInterval": 3, "spawnRate": 3, "redirectTouchCount": 5 } }
+  ],
+  "scripts": {}
+}

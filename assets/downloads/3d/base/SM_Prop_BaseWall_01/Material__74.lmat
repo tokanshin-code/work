@@ -1,0 +1,22 @@
+{
+  "version": "LAYAMATERIAL:04",
+  "props": {
+    "type": "PBR",
+    "textures": [],
+    "renderQueue": 2000,
+    "materialRenderMode": 0,
+    "s_Cull": 2,
+    "s_Blend": 0,
+    "s_DepthTest": 1,
+    "s_DepthWrite": true,
+    "u_AlbedoColor": [
+      0.20730680025921003,
+      0.20730680025921003,
+      0.20730680025921003,
+      1
+    ],
+    "u_Metallic": 0,
+    "u_Smoothness": 0.5019607843137255,
+    "defines": []
+  }
+}
