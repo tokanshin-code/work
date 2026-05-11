@@ -1,0 +1,7 @@
+{
+  "commands": [
+    { "cmd": "createNode", "parent": "Scene3D", "name": "WaterLayer", "type": "Sprite3D" },
+    { "cmd": "waitAssetBusy" }
+  ],
+  "scripts": {}
+}

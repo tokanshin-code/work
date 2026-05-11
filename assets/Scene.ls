@@ -235,6 +235,11 @@
           "_$id": "kaq3k0ta",
           "name": "Units",
           "_$type": "Sprite3D"
+        },
+        {
+          "_$id": "b8tt4spa",
+          "name": "WaterLayer",
+          "_$type": "Sprite3D"
         }
       ]
     },

@@ -53,6 +53,7 @@
     { "id": 25, "name": "龙巢建筑预制体", "path": "downloads/3d/placeholders/dragon_nest.lh", "type": "prefab3d", "description": "程序化占位：商店无合适龙巢模型，后续由几何体底座、尖刺和火焰特效组成", "status": "missing", "lock": false, "reference": [{ "id": 22 }] },
     { "id": 26, "name": "三选一卡牌面板", "path": "downloads/2d/placeholders/card_choice_panel.lh", "type": "prefabui", "description": "程序化占位：半透明遮罩、三张卡牌按钮、卡牌图标、标题文字，暂停时居中显示", "status": "missing", "lock": false, "reference": [{ "id": 7 }, { "id": 8 }] },
     { "id": 27, "name": "结算弹窗", "path": "downloads/2d/placeholders/result_panel.lh", "type": "prefabui", "description": "程序化占位：胜负标题、说明文案、CTA 下载按钮和深色遮罩，局末强展示", "status": "missing", "lock": false, "reference": [{ "id": 8 }] },
-    { "id": 28, "name": "教程点击提示", "path": "downloads/2d/placeholders/tutorial_hint.lh", "type": "prefabui", "description": "程序化占位：点击手势图标加引导文字，开局提示点击相邻地块扩张", "status": "missing", "lock": false, "reference": [{ "id": 10 }] }
+    { "id": 28, "name": "教程点击提示", "path": "downloads/2d/placeholders/tutorial_hint.lh", "type": "prefabui", "description": "程序化占位：点击手势图标加引导文字，开局提示点击相邻地块扩张", "status": "missing", "lock": false, "reference": [{ "id": 10 }] },
+    { "id": 29, "name": "水面底图贴图", "path": "resources/water/water_surface.png", "type": "picture", "description": "程序化生成的蓝色水面波纹贴图，用作棋盘下方场景底板", "status": "matched", "lock": false }
   ]
 }

@@ -40,3 +40,12 @@
 | v4 | 2026-05-11 | 将主相机改为高位俯视并显式 lookAt 地面中心，避免只改欧拉角导致未对准棋盘 | `src/game/HexGameController.ts`, `.temp/camera-angle.test.mjs` | ✅ 完成 |
 | v5 | 2026-05-11 | 参考示例图改为正交俯视广告棋盘视角，完整框住竖屏 7x10 六边形地图 | `src/game/HexGameController.ts`, `.temp/camera-angle.test.mjs` | ✅ 完成 |
 | v6 | 2026-05-11 | 将预览缩放模式从 fixedwidth 改为 showall，确保运行时逻辑尺寸保持 1080x1920 | `settings/PlayerSettings.json`, `.temp/player-settings-resolution.test.mjs` | ✅ 完成 |
+| v7 | 2026-05-11 | 修正六边形等距衔接、缩小建筑/基地比例并增强地块颜色可读性 | `src/game/HexGameController.ts`, `.temp/hex-visual-layout.test.mjs`, `.temp/camera-angle.test.mjs`, `doc/output/requirements.md` | ✅ 完成 |
+| v8 | 2026-05-11 | 将六边形地块改为深色底座加彩色顶面的复合块体，增加明显分隔线和立体厚度 | `src/game/HexGameController.ts`, `.temp/hex-visual-layout.test.mjs`, `doc/output/requirements.md` | ✅ 完成 |
+| v9 | 2026-05-11 | 移除错位底座，改用与六边形顶面轮廓对齐的像素线边框并保留单体块厚度 | `src/game/HexGameController.ts`, `.temp/hex-visual-layout.test.mjs`, `doc/output/requirements.md` | ✅ 完成 |
+| v10 | 2026-05-11 | 新增水面波纹贴图和运行时水面底板作为棋盘场景底 | `assets/resources/water/water_surface.png`, `src/game/HexGameController.ts`, `.temp/water-floor.test.mjs`, `doc/output/resource_list.json`, `doc/output/requirements.md` | ✅ 完成 |
+| v11 | 2026-05-11 | 在场景层级新增 WaterLayer，并将运行时水面底板挂到该层级下显示 | `assets/Scene.ls`, `doc/output/water-layer.game.json`, `src/game/HexGameController.ts`, `.temp/water-layer-hierarchy.test.mjs` | ✅ 完成 |
+| v10 | 2026-05-11 | 完善开局首次点击建造流程，并为产兵建筑增加独立 CD 圆圈进度 | `src/game/HexGameController.ts`, `src/data/SpawnCooldown.ts`, `.temp/spawn-cooldown.test.mjs`, `doc/output/requirements.md` | ✅ 完成 |
+| v11 | 2026-05-11 | 修正开局默认建筑显示和首次点击门槛，开局只保留色块，首次点击后激活双方真实建筑 | `src/game/HexGameController.ts`, `src/data/HexRules.ts`, `.temp/hex-rules.test.mjs`, `.temp/start-flow-source.test.mjs` | ✅ 完成 |
+| v12 | 2026-05-11 | 按参考图保持稳定正交俯视、改用显式相机欧拉角、修正 Scene3D 查找并放大棋盘画面占比 | `src/game/HexGameController.ts`, `.temp/camera-angle.test.mjs`, `doc/output/requirements.md` | ✅ 完成 |
+| v13 | 2026-05-11 | 将卡牌改为成功点击解锁地块后触发，并保证首次解锁立即提供一次三选一 | `src/game/HexGameController.ts`, `.temp/card-trigger-source.test.mjs`, `doc/output/requirements.md` | ✅ 完成 |

@@ -55,6 +55,9 @@ export function canClaimTile(tiles: HexTileState[], col: number, row: number, mo
     if (tile.owner !== "neutral" || tile.kind === "void" || tile.kind === "water") {
         return false;
     }
+    if (isFirstClaim) {
+        return true;
+    }
     if (!isFirstClaim && money < hexCost) {
         return false;
     }

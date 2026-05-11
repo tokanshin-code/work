@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>占城大师 Preview</title>
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #16b5f0;
+    }
+  </style>
+</head>
+<body>
+  <pre id="previewError" style="position:fixed;left:8px;top:8px;z-index:9999;margin:0;padding:8px;max-width:90vw;white-space:pre-wrap;background:rgba(0,0,0,.72);color:#fff;font:12px/1.4 Consolas,monospace;display:none"></pre>
+  <script>
+    const previewError = document.getElementById("previewError");
+    function showPreviewError(message) {
+      previewError.style.display = "block";
+      previewError.textContent += `${message}\n`;
+    }
+    window.addEventListener("error", (event) => {
+      showPreviewError(`${event.message}\n${event.filename}:${event.lineno}:${event.colno}`);
+    });
+    window.addEventListener("unhandledrejection", (event) => {
+      showPreviewError(event.reason?.stack || event.reason || "Unhandled rejection");
+    });
+  </script>
+  <script src="library/packages/com.layabox.layaidea/editorResources/laya-viewer/libs/laya.core.js"></script>
+  <script src="library/packages/com.layabox.layaidea/editorResources/laya-viewer/libs/laya.d3.js"></script>
+  <script src="library/packages/com.layabox.layaidea/editorResources/laya-viewer/libs/laya.webgl_2D.js"></script>
+  <script src="library/packages/com.layabox.layaidea/editorResources/laya-viewer/libs/laya.webgl_3D.js"></script>
+  <script src="library/packages/com.layabox.layaidea/editorResources/laya-viewer/libs/laya.ui.js"></script>
+  <script src="library/packages/com.layabox.layaidea/editorResources/laya-viewer/libs/laya.gltf.js"></script>
+  <script>
+    Laya.URL.basePath = "assets/";
+  </script>
+  <script src="bin/js/bundles/bundle.js"></script>
+  <script src="bin/js/bundles/bundle.scene.js"></script>
+  <script>
+    document.body.dataset.previewScriptsReached = "true";
+  </script>
+</body>
+</html>
