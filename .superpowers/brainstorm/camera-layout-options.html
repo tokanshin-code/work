@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>占城大师镜头构图对比</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #122033;
+      --muted: #5e6a78;
+      --line: #d8e0ea;
+      --water: #7fe6ff;
+      --hud: #163c5a;
+      --tile: #d6d3c8;
+      --player: #97dd3e;
+      --enemy: #c93d42;
+      --lava: #f47b22;
+      --void: #50555a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: #f4f7fb;
+      padding: 28px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      line-height: 1.25;
+    }
+
+    .subtitle {
+      margin: 0 0 24px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(260px, 1fr));
+      gap: 20px;
+      align-items: start;
+    }
+
+    .option {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 12px 32px rgba(18, 32, 51, 0.08);
+    }
+
+    .option.recommended {
+      border-color: #2b7de9;
+      box-shadow: 0 14px 34px rgba(43, 125, 233, 0.16);
+    }
+
+    .label {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: baseline;
+      margin-bottom: 12px;
+    }
+
+    .label h2 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .tag {
+      font-size: 12px;
+      color: #fff;
+      background: #2b7de9;
+      border-radius: 999px;
+      padding: 3px 8px;
+      white-space: nowrap;
+    }
+
+    .phone {
+      position: relative;
+      width: min(100%, 260px);
+      aspect-ratio: 9 / 16;
+      margin: 0 auto;
+      overflow: hidden;
+      border: 2px solid #1d2e44;
+      background: var(--water);
+    }
+
+    .top {
+      position: absolute;
+      inset: 0 0 auto;
+      height: 29%;
+      background: linear-gradient(#4e8fd4, #4f84bd);
+    }
+
+    .timer,
+    .coin {
+      position: absolute;
+      top: 16px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      background: var(--hud);
+      z-index: 2;
+    }
+
+    .timer {
+      left: 50%;
+      width: 92px;
+      transform: translateX(-50%);
+      font-size: 22px;
+    }
+
+    .coin {
+      right: 16px;
+      width: 66px;
+      font-size: 15px;
+    }
+
+    .cta-safe {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 4.2%;
+      background: rgba(16, 49, 85, 0.72);
+      z-index: 1;
+    }
+
+    .board {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 1.7%;
+    }
+
+    .tile {
+      width: 100%;
+      aspect-ratio: 1.12;
+      background: var(--tile);
+      clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0 50%);
+      border: 1px solid rgba(81, 92, 104, 0.45);
+    }
+
+    .row-offset {
+      transform: translateX(8%);
+    }
+
+    .player { background: var(--player); }
+    .enemy { background: var(--enemy); }
+    .lava { background: var(--lava); }
+    .void { background: var(--void); }
+    .water-tile { background: rgba(127, 230, 255, 0.88); }
+
+    .base {
+      position: absolute;
+      left: 50%;
+      top: 74%;
+      width: 18%;
+      height: 9%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: rgba(86, 112, 70, 0.82);
+      border: 5px solid rgba(47, 116, 45, 0.75);
+    }
+
+    .enemy-base {
+      position: absolute;
+      left: 50%;
+      top: 18%;
+      width: 18%;
+      height: 8%;
+      transform: translate(-50%, -50%);
+      background: var(--enemy);
+      border: 2px solid #71212a;
+    }
+
+    .coins {
+      position: absolute;
+      left: 50%;
+      top: 72%;
+      width: 42%;
+      height: 16%;
+      transform: translate(-50%, -50%);
+      color: #d67100;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .coins span {
+      position: absolute;
+      white-space: nowrap;
+    }
+
+    .coins span:nth-child(1) { left: 0; top: 8%; }
+    .coins span:nth-child(2) { right: 0; top: 8%; }
+    .coins span:nth-child(3) { left: 8%; top: 48%; }
+    .coins span:nth-child(4) { right: 8%; top: 48%; }
+    .coins span:nth-child(5) { left: 34%; bottom: 0; }
+
+    .waste-top,
+    .waste-bottom {
+      position: absolute;
+      left: 0;
+      right: 0;
+      background: rgba(255, 72, 72, 0.13);
+      border: 1px dashed rgba(188, 42, 42, 0.55);
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .waste-top { top: 29%; height: 12%; }
+    .waste-bottom { bottom: 4.2%; height: 9%; }
+
+    .a .board { top: 36%; width: 80%; }
+    .a .enemy-base { top: 16%; }
+    .a .base { top: 75%; }
+
+    .b .board { top: 28%; width: 86%; }
+    .b .enemy-base { top: 14%; }
+    .b .base { top: 74%; }
+    .b .waste-top { display: none; }
+    .b .waste-bottom { height: 4%; }
+
+    .c .board { top: 24%; width: 95%; }
+    .c .enemy-base { top: 12%; }
+    .c .base { top: 76%; }
+    .c .waste-top,
+    .c .waste-bottom { display: none; }
+
+    .notes {
+      margin: 14px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 920px) {
+      .grid { grid-template-columns: 1fr; }
+      .phone { width: 260px; }
+    }
+  </style>
+</head>
+<body>
+  <h1>镜头构图对比</h1>
+  <p class="subtitle">红色虚线区域表示截图里较明显的低信息空白。重点是在保持 7x10 棋盘完整和 CTA 安全区的同时，让棋盘更早进入视觉中心。</p>
+
+  <div class="grid">
+    <section class="option a">
+      <div class="label">
+        <h2>A 当前远景</h2>
+      </div>
+      <div class="phone">
+        <div class="top"></div>
+        <div class="timer">80</div>
+        <div class="coin">🪙 20</div>
+        <div class="board">
+          <div class="tile void"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div>
+          <div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset enemy"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div>
+          <div class="tile"></div><div class="tile lava"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div>
+          <div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div>
+          <div class="tile water-tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile water-tile"></div>
+          <div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div>
+          <div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile lava"></div><div class="tile"></div>
+          <div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset player"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div>
+          <div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile void"></div>
+        </div>
+        <div class="enemy-base"></div>
+        <div class="base"></div>
+        <div class="coins"><span>🪙25</span><span>🪙25</span><span>🪙25</span><span>🪙25</span><span>🪙25</span></div>
+        <div class="waste-top"></div>
+        <div class="waste-bottom"></div>
+        <div class="cta-safe"></div>
+      </div>
+      <ul class="notes">
+        <li>棋盘完整安全，但上方水面和下方水面占比偏高。</li>
+        <li>第一眼焦点被 HUD 与大空白分散。</li>
+      </ul>
+    </section>
+
+    <section class="option recommended b">
+      <div class="label">
+        <h2>B 推荐：上移近景</h2>
+        <span class="tag">推荐</span>
+      </div>
+      <div class="phone">
+        <div class="top"></div>
+        <div class="timer">80</div>
+        <div class="coin">🪙 20</div>
+        <div class="board">
+          <div class="tile void"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div>
+          <div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset enemy"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div>
+          <div class="tile"></div><div class="tile lava"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div>
+          <div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div>
+          <div class="tile water-tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile water-tile"></div>
+          <div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div>
+          <div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile lava"></div><div class="tile"></div>
+          <div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset player"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div>
+          <div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile void"></div>
+        </div>
+        <div class="enemy-base"></div>
+        <div class="base"></div>
+        <div class="coins"><span>🪙25</span><span>🪙25</span><span>🪙25</span><span>🪙25</span><span>🪙25</span></div>
+        <div class="waste-top"></div>
+        <div class="waste-bottom"></div>
+        <div class="cta-safe"></div>
+      </div>
+      <ul class="notes">
+        <li>保留完整棋盘和左右水面边界。</li>
+        <li>棋盘更靠上，压缩 HUD 到战场之间的空白。</li>
+        <li>底部仍有 CTA/结算安全区。</li>
+      </ul>
+    </section>
+
+    <section class="option c">
+      <div class="label">
+        <h2>C 激进满屏</h2>
+      </div>
+      <div class="phone">
+        <div class="top"></div>
+        <div class="timer">80</div>
+        <div class="coin">🪙 20</div>
+        <div class="board">
+          <div class="tile void"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div>
+          <div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset enemy"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div>
+          <div class="tile"></div><div class="tile lava"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div>
+          <div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div>
+          <div class="tile water-tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile water-tile"></div>
+          <div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div>
+          <div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile lava"></div><div class="tile"></div>
+          <div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset player"></div><div class="tile row-offset"></div><div class="tile row-offset"></div><div class="tile row-offset"></div>
+          <div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile void"></div>
+        </div>
+        <div class="enemy-base"></div>
+        <div class="base"></div>
+        <div class="coins"><span>🪙25</span><span>🪙25</span><span>🪙25</span><span>🪙25</span><span>🪙25</span></div>
+        <div class="waste-top"></div>
+        <div class="waste-bottom"></div>
+        <div class="cta-safe"></div>
+      </div>
+      <ul class="notes">
+        <li>战场存在感最强。</li>
+        <li>模型、血条、金币 UI 贴边风险更高。</li>
+        <li>后续卡牌弹层更容易遮挡棋盘。</li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>

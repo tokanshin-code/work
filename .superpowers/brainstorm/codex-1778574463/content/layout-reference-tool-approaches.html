@@ -1,0 +1,74 @@
+<h2>模型比例与布局参考页：工具方向选择</h2>
+<p class="subtitle">目标是让你把当前项目的模型大小、棋盘布局、相机和 UI 情况清楚告诉 AI，减少反复凭感觉改参数。</p>
+
+<div class="cards">
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mockup">
+        <div class="mockup-header">A. 静态视觉报告</div>
+        <div class="mockup-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="placeholder">9:16 画面构图示意</div>
+            <div>
+              <div class="mock-content">模型比例表</div>
+              <div class="mock-content">相机参数</div>
+              <div class="mock-content">UI 坐标</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A. 自动生成静态参考页</h3>
+      <p>从 `HexGameController.ts` 和 `Scene.ls` 读取参数，生成一个 HTML 页面和 AI 摘要。实现快，适合先把情况讲清楚。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mockup">
+        <div class="mockup-header">B. 分区视觉诊断页</div>
+        <div class="mockup-body">
+          <div class="split">
+            <div>
+              <div class="placeholder">棋盘安全区</div>
+              <div class="placeholder">模型占格示意</div>
+            </div>
+            <div>
+              <div class="mock-content">AI 调整指令模板</div>
+              <div class="mock-content">风险提示</div>
+              <div class="mock-content">相关源码位置</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B. 视觉诊断 + AI 指令页（推荐）</h3>
+      <p>除了参数表，还画出 9:16 画面、棋盘占比、模型占格、HUD/金币栏位置，并生成“要调整什么就改哪里”的提示语。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mockup">
+        <div class="mockup-header">C. 交互调参沙盘</div>
+        <div class="mockup-body">
+          <div class="placeholder">实时预览</div>
+          <input class="mock-input" value="soldierModelScale = 0.22">
+          <input class="mock-input" value="camera.z = 10.6">
+          <button class="mock-button">导出建议补丁</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C. 交互式预览与调参</h3>
+      <p>页面里直接拖动比例和相机参数，输出建议补丁。体验最好，但首版实现更重，也更容易和真实 Laya 渲染有偏差。</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>我建议采用 B</h3>
+  <p>它比纯参数报告更适合“告知 AI 当前视觉情况”，又不会假装替代 Laya 真实预览。首版可以用静态示意图和源码抽取，后续再加 C 的滑杆预览。</p>
+</div>

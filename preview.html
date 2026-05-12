@@ -43,6 +43,20 @@
   <script src="bin/js/bundles/bundle.scene.js"></script>
   <script>
     document.body.dataset.previewScriptsReached = "true";
+    (async function bootPreview() {
+      try {
+        await Laya.init(1080, 1920);
+        Laya.stage.scaleMode = Laya.Stage.SCALE_FIXED_WIDTH;
+        Laya.stage.screenMode = Laya.Stage.SCREEN_VERTICAL;
+        Laya.stage.alignH = Laya.Stage.ALIGN_CENTER;
+        Laya.stage.alignV = Laya.Stage.ALIGN_MIDDLE;
+        Laya.stage.bgColor = "#16b5f0";
+        await Laya.Scene.open("Scene.ls", true);
+        document.body.dataset.previewBooted = "true";
+      } catch (error) {
+        showPreviewError(error?.stack || error?.message || String(error));
+      }
+    })();
   </script>
 </body>
 </html>

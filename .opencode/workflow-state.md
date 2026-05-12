@@ -93,3 +93,6 @@
 | v35 | 2026-05-12 | 将结束面板重绘为六边形领地徽章风格的扁平矢量 UI，并保持标题、描述、CTA 文案单行可替换 | `src/game/HexGameController.ts`, `.temp/result-panel-vector-ui.test.mjs`, `doc/output/requirements.md`, `MEMORY.md` | ✅ 完成 |
 | v36 | 2026-05-12 | 新增建筑周边染色与士兵路径染色，支持双方同格中立灰和染色防抖 | `src/game/HexGameController.ts`, `.temp/tile-painting-source.test.mjs`, `doc/output/requirements.md`, `MEMORY.md` | ✅ 完成 |
 | v40 | 2026-05-12 | 核对现有玩法代码并将开局、解锁、卡牌、建筑、单位、染色和胜负逻辑重新整理进需求变更记录 | `doc/output/requirements.md`, `.opencode/workflow-state.md`, `MEMORY.md` | ✅ 完成 |
+| v41 | 2026-05-12 | 六边形改为长边朝镜头的平顶朝向，并同步棋盘为列错位布局 | `src/game/HexGameController.ts`, `.temp/hex-visual-layout.test.mjs`, `.temp/screenshots/hex-flat-top-layout.png`, `doc/output/requirements.md`, `MEMORY.md` | ✅ 完成 |
+| v42 | 2026-05-12 | 清理六边形地块多余线框和阴影轮廓，改用纯色地块与物理微缝表现边界 | `src/game/HexGameController.ts`, `.temp/hex-outline-cleanup.test.mjs`, `.temp/hex-visual-layout.test.mjs`, `.temp/screenshots/hex-outline-cleanup-unlit-final.png`, `doc/output/requirements.md`, `MEMORY.md` | ✅ 完成 |
+| v43 | 2026-05-12 | 补充敌方从己方邻格向玩家侧扩张、单位目标优先级和建筑血条闪抖受击反馈记录 | `src/game/HexGameController.ts`, `.temp/unit-visibility-source.test.mjs`, `.temp/enemy-ai-damage-feedback-source.test.mjs`, `MEMORY.md`, `.opencode/workflow-state.md` | ✅ 完成 |

@@ -53,10 +53,14 @@
 - 投射阴影方案已升级为地块也参与真实阴影：`HexGameController.enableProjectedShadows=true` 时，方向光用 `Laya.ShadowMode.SoftLow`、`shadowStrength=0.72`、更低侧光方向 `(-1.05,-0.28,-0.72)`；建筑/单位/加载模型和地块 `castShadow`，地块/水面 `receiveShadow`。地块接收阴影需要使用 `BlinnPhongMaterial`，纯 `UnlitMaterial` 接收阴影不明显。
 - 建筑产兵 CD 圈使用用户提供的 `resources/ui/spawn_progress_bg.png` 黑色底图和 `resources/ui/spawn_progress_ring.png` 绿色圆环；当前 `drawSpawnProgress()` 给圆环设置 `mask` 并用 `drawPie()` 扇形遮罩显示进度，卡牌暂停和结算暂停时冷却冻结。
 - 金币图标正式资源固定为 `downloads/2d/ui/coin_2.png`，HUD 钱包通过 `WalletCoinIcon` 显示在 `MoneyLabel` 数字前方且层级高于背景；`refreshHud()` 保留前导空格给图标留位，解锁费用 UI 也复用同一路径并把数字放在图标右侧。
-- 六边形地块需要保留参考图式微缝但不能过宽：当前为上一版 60% 缝隙，`HEX_TILE_GAP=0.048`，`HEX_X_STEP=1.47`，`HEX_ROW_X_OFFSET=0.735`，`HEX_Z_STEP=1.273`；不要改回刚好相切的 `sqrt(3)*radius / 1.5*radius`，否则水面/底色不会从格子之间露出。
+- 六边形地块需要保留参考图式微缝但不能过宽，并已改为平顶/长边朝镜头：`HEX_TILE_GAP=0.048`，`HEX_X_STEP=1.278`，`HEX_Z_STEP=1.468`，`HEX_COL_Z_OFFSET=HEX_Z_STEP*0.5`；地块 `rotationEuler=(0,0,0)`，外轮廓用 `Math.PI/6` 偏移贴合平顶边缘。不要改回尖顶布局的 `HEX_ROW_X_OFFSET` 或 `rotationY=30`。
+- 普通棋盘地块不要再叠加 `MatchedHexTileVisual`/`grass.glb` 或 `PixelLineSprite3D` 线框；这些会在平顶布局和 2.5D 视角下产生大量交叉轮廓线。当前普通地块仅用 `PrimitiveMesh.createCylinder(..., 6)` + `UnlitMaterial`，且不对地块调用 `setShadowCasting/Receiving`，边界依赖微缝和水面底色。
 - 地块解锁动画现在由 `playTileUnlockFlip()` 执行三段式 Tween：先清理 `node.transform` 旧 Tween，升到 `TILE_UNLOCK_FLIGHT_HEIGHT=1.35`（原 0.75 的 180%），空中围绕 X 轴按 `TILE_UNLOCK_ROTATION_DEGREES=720` 上下翻转两周，再落回并恢复原始 position/rotation；不要改成 Y 轴横向转圈，且后续优化不能省略结束复位，否则连续点击后地块会漂移或边线错位。
 - 用户要求导入或替换到地块上的 3D 模型，在大小比例表现上不超过单格六边形地块可用范围的 90%，应完整放置在单格内且不压到相邻格；后续模型导入、对标和缩放参数调整都需按此约束检查。
 - 参考图配色已集中到 `HexGameController.ts` 顶部常量：水面/相机背景 `COLOR_WATER=#7FE6FF`（渲染后接近亮青蓝）、中立地块 `COLOR_NEUTRAL_TILE=#BDBDBD`、己方 `COLOR_PLAYER_TILE=#97DD3E`、敌方 `COLOR_ENEMY_TILE=#C93D42`、缝线 `COLOR_TILE_OUTLINE=#9A9A9A`；水面底板不再应用 `water_surface.png` 为 albedoTexture，避免纹理把水面压暗。
 - 棋盘采用 2.5D 错层空间：`HEX_ROW_ELEVATION_STEP=0.045`，`hexToWorld()` 的 y 值由 `getTileElevation(row)` 生成；建筑/基地/单位/UI 投影需用 `getTileSurfaceY()` 和 `getModelBaseY()` 对齐地块高度，不要再把新对象固定放到全局 `MODEL_BASE_Y`，否则会在错层地块上悬空或陷入。
 - 结束面板采用运行时矢量绘制的“六边形领地徽章”风格：`ResultTitle`、`ResultText` 和 `ResultCTAButton` 文案必须保留为 Laya 文本节点，禁止烘焙进 SVG/PNG；描述文本单行显示，不换行，后续换文案只改文本字段。
 - 需求变更记录已在 `doc/output/requirements.md` 的“增量变更 v40：现有玩法逻辑整理”中统一收口当前玩法口径：开局 base 选建筑、金币解锁焦点邻格、解锁后再选建筑、建筑/兵种/金矿/染色/胜负等规则以后续实现应优先对齐该段，而不是旧的定时卡牌或首次点击占格口径。
+- 建筑受击反馈在 `HexGameController.playBuildingHitFeedback()` 中保持轻量：短时间偏移 `transform.position`、放大 `transform.localScale`、临时替换缓存的红色 `UnlitMaterial`，再用 `Laya.timer.once` 恢复原位置/缩放/材质；重复受击前会先恢复旧 baseline，并用 controller 级单调递增 token 防止旧 timer 覆盖新反馈，不能用 building 上的 active token 自增，因为 restore 后会清空并导致旧 timer 再次匹配。恢复材质时需区分 `sharedMaterials` 原本是否为 `undefined`，原本缺失则删除字段。
+- 敌方扩张 AI 已接入 `HexGameController.updateEnemyAi()`：只在开战、未暂停、未结算时每 `ENEMY_EXPANSION_INTERVAL=5` 秒从敌方相邻的中立非水/非 void 格中选一格，优先更靠玩家侧的大 row、再靠开局列 `OPENING_TILE_COL`；每 `ENEMY_BUILDING_EVERY_EXPANSIONS=2` 次扩张用 `chooseEnemyOpeningBuilding()` 轮换生成敌方建筑，不会弹出玩家卡牌 UI。建筑邻格染色必须跳过 base 与对方已占地，只能染中立或同阵营地块，避免敌方扩张建筑把玩家基地/玩家领地翻色。
+- 敌方 AI 与受击反馈口径：单位寻敌优先级为士兵 -> 非基地建筑 -> 基地/核心兜底；建筑受击只表现为血条变化加闪红/抖动/缩放反馈，不显示飘字伤害数字；敌方扩张必须从敌方已占邻格向玩家侧推进，并且不能重涂基地或对方已占地块。

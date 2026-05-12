@@ -5,14 +5,16 @@ import { SpawnCooldownState, createSpawnCooldown, tickSpawnCooldown } from "../d
 const { regClass, property } = Laya;
 const HEX_TILE_RADIUS = 0.82;
 const HEX_TILE_HEIGHT = 0.32;
-const HEX_OUTLINE_Y = 0.18;
+const HEX_TILE_ROTATION_X = 0;
 const HEX_TILE_GAP = 0.048;
 const GROUND_SURFACE_Y = HEX_TILE_HEIGHT * 0.5;
 const MODEL_BASE_Y = GROUND_SURFACE_Y + 0.04;
-const HEX_X_STEP = 1.47;
-const HEX_ROW_X_OFFSET = 0.735;
-const HEX_Z_STEP = 1.273;
-const HEX_ROW_ELEVATION_STEP = 0.045;
+const HEX_X_STEP = 1.278;
+const HEX_Z_STEP = 1.468;
+const HEX_COL_Z_OFFSET = HEX_Z_STEP * 0.5;
+const HEX_ROW_ELEVATION_STEP = 0.075;
+const TILE_LIGHT_DIRECTION = new Laya.Vector3(0, -0.77, -0.64);
+const TILE_LIGHT_ROTATION = new Laya.Vector3(-130, 180, 0);
 const BUILDING_FOOTPRINT = 0.62;
 const BASE_VISUAL_SCALE = 0.45;
 const MODEL_TILE_SCALE_CAP = 0.42;
@@ -22,7 +24,7 @@ const UNIT_FOOTPRINT_LIMIT = HEX_TILE_RADIUS * 0.58;
 const OPENING_TILE_COL = 3;
 const OPENING_TILE_ROW = 8;
 const WATER_FLOOR_SIZE = 18;
-const WATER_FLOOR_Y = -0.22;
+const WATER_FLOOR_Y = -0.66;
 const BUILDING_MAX_HP = 100;
 const TOWER_ATTACK_RANGE = 3.2;
 const TOWER_ATTACK_INTERVAL = 1.1;
@@ -46,16 +48,18 @@ const TILE_UNLOCK_SPIN_MS = 420;
 const TILE_UNLOCK_LAND_MS = 160;
 const VICTORY_SPREAD_STEP_MS = 150;
 const TILE_PAINT_COOLDOWN_MS = 160;
+const ENEMY_EXPANSION_INTERVAL = 5;
+const ENEMY_BUILDING_EVERY_EXPANSIONS = 2;
 const COLOR_WATER = "#7FE6FF";
 const COLOR_NEUTRAL_TILE = "#BDBDBD";
 const COLOR_PLAYER_TILE = "#97DD3E";
 const COLOR_ENEMY_TILE = "#C93D42";
 const COLOR_TILE_SIDE = "#8B8B8B";
-const COLOR_TILE_OUTLINE = "#9A9A9A";
 const COLOR_LAVA_TILE = "#F47B22";
 const COLOR_VOID_TILE = "#50555A";
 const RESULT_PANEL_ART_LAYER = "ResultPanelVectorArt";
 const RESULT_PANEL_BADGE_LAYER = "ResultPanelBadge";
+const RESULT_PANEL_BADGE_LABEL = "ResultPanelBadgeLabel";
 const RESULT_PANEL_HEX_STRIP_LAYER = "ResultPanelHexStrip";
 const RESULT_PANEL_CTA_ART_LAYER = "ResultPanelCtaArt";
 const RESULT_PANEL_DARK = "#123F55";
@@ -100,12 +104,12 @@ export class HexGameController extends Laya.Script {
     @property({ type: String }) public dragonNestPrefabPath: string = "match/Models/GLB format/building-wizard-tower-unpacked/building-wizard-tower.lh";
     @property({ type: String }) public baseBuildingPrefabPath: string = "match/Models/GLB format/building-castle-unpacked/building-castle.lh";
     @property({ type: String }) public fireEffectPath: string = "downloads/3d/effects/FLame_red.lh";
-    @property({ type: String }) public hitSoundPath: string = "downloads/2d/sfx/afedc1f409ba5418cc3ff2d6fdc64eca.mp3";
+    @property({ type: String }) public hitSoundPath: string = "";
     @property({ type: String }) public bgmPath: string = "downloads/2d/bgm/f93f9377dcad12be63b55fcad314858d.mp3";
     @property({ type: String }) public waterTexturePath: string = "resources/water/water_surface.png";
-    @property({ type: String }) public hexTilePrefabPath: string = "match/Models/GLB format/grass.glb";
+    @property({ type: String }) public hexTilePrefabPath: string = "";
     @property({ type: String }) public cardPanelSkinPath: string = "downloads/2d/card_choice_panel/CardFrame_01_White_Bg.png";
-    @property({ type: String }) public cardOptionSkinPath: string = "downloads/2d/card_option/CardFrame_01_White_Bg.png";
+    @property({ type: String }) public cardOptionSkinPath: string = "";
     @property({ type: String }) public resultPanelSkinPath: string = "downloads/2d/result_panel/Popup_Box_05_Bag_Bg.png";
     @property({ type: String }) public tutorialHintSkinPath: string = "downloads/2d/tutorial_hint/info.png";
     @property({ type: String }) public coinIconPath: string = "downloads/2d/ui/coin_2.png";
@@ -134,7 +138,7 @@ export class HexGameController extends Laya.Script {
     @property({ type: Number }) public tileModelScale: number = 0.42;
     @property({ type: Boolean }) public enableProjectedShadows: boolean = true;
     @property({ type: Number }) public shadowDistance: number = 24;
-    @property({ type: Number }) public shadowStrength: number = 0.72;
+    @property({ type: Number }) public shadowStrength: number = 0.9;
     @property({ type: Number }) public shadowResolution: number = 1024;
     @property({ type: Boolean }) public showDebugLayerLabels: boolean = false;
 
@@ -156,6 +160,9 @@ export class HexGameController extends Laya.Script {
     private incomeTimer: number = 0;
     private nextUnitCardStart: number = 0;
     private nextEnemyBuildingIndex: number = 0;
+    private enemyExpansionTimer: number = 0;
+    private enemyExpansionCount: number = 0;
+    private lastEnemyBuildingExpansionCount: number = 0;
     private activeCardChoices: CardId[] = ["arrowTower", "goldMine", "spearBarracks"];
     private gameStarted: boolean = false;
     private touchCount: number = 0;
@@ -169,14 +176,18 @@ export class HexGameController extends Laya.Script {
     private pendingInitialBuildPosition: Laya.Vector3 | null = null;
     private unlockCostFocusTile: HexTileState | null = null;
     private walletCoinIcon?: Laya.Image;
+    private tutorialHintIcon?: Laya.Image;
     private firstTapHighlight?: Laya.Sprite;
     private firstTapHand?: Laya.Image;
+    private resultBadgeLabel?: Laya.Label;
     private playerHpBar?: Laya.Sprite;
     private enemyHpBar?: Laya.Sprite;
     private uiLayers?: UiLayers;
     private uiMode: UiMode = "tutorial";
+    private buildingHitFlashMaterial?: Laya.Material;
+    private buildingHitFeedbackToken: number = 0;
     private readonly runtimePrefabPathMap: Record<string, string> = {
-        "match/绑定动画/SW_NPC_000_通用/SW_NPC_008_士兵@skin.fbx": "match/绑定动画/SW_NPC_000_通用/SW_NPC_008_士兵@skin.lh",
+        "match/绑定动画/SW_NPC_000_通用/SW_NPC_008_士兵@skin.fbx": "downloads/3d/soldier/Role_taikong_01.lh",
         "match/模型资产/建筑/building_058_FGH_主塔/building_058_FGH_Tower.fbx": "match/Models/GLB format/building-archery-unpacked/building-archery.lh",
         "match/模型资产/建筑/building_056_主楼/building_056_zhulou.fbx": "match/Models/GLB format/building-cabin-unpacked/building-cabin.lh",
         "match/模型资产/建筑/building_045_FGH_主楼/building_045_FGH_Main.fbx": "match/Models/GLB format/building-castle-unpacked/building-castle.lh",
@@ -225,6 +236,7 @@ export class HexGameController extends Laya.Script {
             this.updateUnlockCostLabels();
             this.refreshHud();
         }
+        this.updateEnemyAi(dt);
         this.updateBuildingSpawns(dt);
         this.updateTowerAttacks(dt);
         this.updateUnits(dt);
@@ -275,24 +287,26 @@ export class HexGameController extends Laya.Script {
     private setupCamera(): void {
         const camera = this.getMainCamera();
         if (!camera) return;
-        camera.orthographic = false;
+        camera.orthographic = true;
+        camera.orthographicVerticalSize = 16.2;
         camera.fieldOfView = 42;
         camera.nearPlane = 0.3;
         camera.farPlane = 1000;
         camera.clearColor = this.colorFromHex(COLOR_WATER);
-        camera.transform.position = new Laya.Vector3(0, 21.2, 10.6);
-        camera.transform.rotationEuler = new Laya.Vector3(-66, 0, 0);
+        camera.transform.position = new Laya.Vector3(0, 21.2, 13.4);
+        camera.transform.rotationEuler = new Laya.Vector3(-60, 0, 0);
     }
 
     private setupLighting(): void {
         const scene3D = this.getScene3D() as (Laya.Scene3D & { ambientColor?: Laya.Color }) | null;
-        if (scene3D) scene3D.ambientColor = new Laya.Color(0.62, 0.68, 0.72, 1);
+        if (scene3D) scene3D.ambientColor = new Laya.Color(0.46, 0.5, 0.56, 1);
         const lightNode = scene3D?.getChildByName("Direction Light") as Laya.Sprite3D | null;
         const light = lightNode?.getComponent(Laya.DirectionLightCom) as (Laya.DirectionLightCom & { intensity?: number }) | null;
         if (!light) return;
+        lightNode.transform.rotationEuler = TILE_LIGHT_ROTATION;
         light.color = new Laya.Color(1, 0.95, 0.82, 1);
-        light.intensity = 1.6;
-        light.direction = new Laya.Vector3(-1.05, -0.28, -0.72);
+        light.intensity = 1.85;
+        light.direction = TILE_LIGHT_DIRECTION;
         this.configureProjectedShadows(light);
     }
 
@@ -312,6 +326,7 @@ export class HexGameController extends Laya.Script {
 
     private buildBoard(): void {
         for (const tile of this.tiles) {
+            if (tile.kind === "void") continue;
             const node = this.createHexTileNode(tile);
             this.hexBoard.addChild(node);
             this.tilesByKey.set(this.key(tile.col, tile.row), node);
@@ -407,31 +422,8 @@ export class HexGameController extends Laya.Script {
         this.setShadowCasting(node, this.enableProjectedShadows);
         this.setShadowReceiving(node, this.enableProjectedShadows);
         node.transform.position = this.hexToWorld(tile.col, tile.row);
-        node.transform.rotationEuler = new Laya.Vector3(0, 30, 0);
-        this.createHexTileVisual(node, tile);
-        node.addChild(this.createHexOutline(tile));
+        node.transform.rotationEuler = new Laya.Vector3(HEX_TILE_ROTATION_X, 0, 0);
         return node;
-    }
-
-    private createHexTileVisual(parent: Laya.Sprite3D, tile: HexTileState): void {
-        if (!this.hexTilePrefabPath) return;
-        const container = new Laya.Sprite3D("MatchedHexTileVisual");
-        parent.addChild(container);
-        this.createPrefabVisual(container, this.hexTilePrefabPath, new Laya.Vector3(0, 0, 0), this.getModelScaleVector(this.tileModelScale), this.getTileColor(tile), MODEL_FOOTPRINT_LIMIT);
-    }
-
-    private createHexOutline(tile: HexTileState): Laya.PixelLineSprite3D {
-        const outline = new Laya.PixelLineSprite3D(6, `HexOutline_${tile.col}_${tile.row}`);
-        const color = this.colorFromHex(COLOR_TILE_OUTLINE);
-        const points: Laya.Vector3[] = [];
-        for (let i = 0; i < 6; i++) {
-            const angle = Math.PI / 3 * i;
-            points.push(new Laya.Vector3(Math.cos(angle) * HEX_TILE_RADIUS, HEX_OUTLINE_Y, Math.sin(angle) * HEX_TILE_RADIUS));
-        }
-        for (let i = 0; i < 6; i++) {
-            outline.addLine(points[i], points[(i + 1) % 6], color, color);
-        }
-        return outline;
     }
 
     private setupBases(): void {
@@ -453,12 +445,20 @@ export class HexGameController extends Laya.Script {
         const tileVisual = new Laya.Sprite3D("BaseTileVisual");
         tileVisual.transform.localPosition = new Laya.Vector3(0, -MODEL_BASE_Y, 0);
         base.addChild(tileVisual);
-        this.createPrefabVisual(tileVisual, this.hexTilePrefabPath, new Laya.Vector3(0, 0, 0), this.getModelScaleVector(this.tileModelScale), team === "player" ? COLOR_PLAYER_TILE : COLOR_ENEMY_TILE, MODEL_FOOTPRINT_LIMIT);
+        this.addBaseTileVisual(tileVisual, team === "player" ? COLOR_PLAYER_TILE : COLOR_ENEMY_TILE);
 
         const buildingVisual = new Laya.Sprite3D("BaseBuildingVisual");
         buildingVisual.transform.localPosition = new Laya.Vector3(0, 0, 0);
         base.addChild(buildingVisual);
         this.createPrefabVisual(buildingVisual, this.baseBuildingPrefabPath, new Laya.Vector3(0, 0, 0), this.getModelScaleVector(this.baseBuildingModelScale), team === "player" ? COLOR_PLAYER_TILE : COLOR_ENEMY_TILE, BUILDING_FOOTPRINT_LIMIT);
+    }
+
+    private addBaseTileVisual(parent: Laya.Sprite3D, color: string): void {
+        const visual = new Laya.MeshSprite3D(Laya.PrimitiveMesh.createCylinder(HEX_TILE_RADIUS, HEX_TILE_HEIGHT, 6), "BaseTileMesh");
+        visual.meshRenderer.sharedMaterial = this.createTileSurfaceMaterial(color);
+        this.setShadowCasting(visual, this.enableProjectedShadows);
+        this.setShadowReceiving(visual, this.enableProjectedShadows);
+        parent.addChild(visual);
     }
 
     private createDebugLayerLabel(tile: HexTileState): void {
@@ -529,8 +529,13 @@ export class HexGameController extends Laya.Script {
         this.uiLayers.result.visible = mode === "result";
         this.cardPanel.visible = mode === "cardChoice";
         this.resultPanel.visible = mode === "result";
-        this.ctaButton.visible = mode === "result";
+        this.resultCtaButton.visible = mode === "result";
+        this.ctaButton.visible = false;
         this.hintLabel.visible = mode === "tutorial";
+        const tutorialSample = this.uiRoot.getChildByName("TutorialHintAssetSample") as Laya.Image | null;
+        if (tutorialSample) tutorialSample.visible = false;
+        const tutorialIcon = this.tutorialHintIcon ?? this.uiRoot.getChildByName("TutorialHintAssetIcon") as Laya.Image | null;
+        if (tutorialIcon) tutorialIcon.visible = mode === "tutorial";
     }
 
     private applyUiSkins(): void {
@@ -596,6 +601,7 @@ export class HexGameController extends Laya.Script {
         this.hintLabel.color = "#FFFFFF";
         this.hintLabel.stroke = 8;
         this.hintLabel.strokeColor = "#050505";
+        this.positionTutorialHintIcon(parent);
     }
 
     private styleCardPanel(): void {
@@ -724,7 +730,8 @@ export class HexGameController extends Laya.Script {
         const parent = this.uiLayers?.result ?? this.uiRoot;
         if (this.resultPanel.parent !== parent) parent.addChild(this.resultPanel);
         if (this.ctaButton.parent !== parent) parent.addChild(this.ctaButton);
-        this.setDesignRect(this.resultPanel, 80, 590, 920, 650);
+        if (this.resultCtaButton.parent !== parent) parent.addChild(this.resultCtaButton);
+        this.setDesignRect(this.resultPanel, 80, 590, 920, 560);
         this.resultPanel.mouseEnabled = true;
 
         const legacySkin = this.resultPanel.getChildByName("ResultPanelSkin") as Laya.Image | null;
@@ -734,7 +741,7 @@ export class HexGameController extends Laya.Script {
 
         this.configureSingleLineResultLabel(this.resultTitle, 120, 212, 680, 78, 58, RESULT_PANEL_DARK, 0, RESULT_PANEL_DARK);
         this.configureSingleLineResultLabel(this.resultText, 130, 302, 660, 54, 32, "#D98720", 0, "#D98720");
-        this.setDesignRect(this.resultCtaButton, 220, 480, 480, 126);
+        this.setDesignRect(this.resultCtaButton, 300, 1136, 480, 126);
         this.resultCtaButton.stateNum = 2;
         this.resultCtaButton.skin = "";
         this.resultCtaButton.label = "立即下载";
@@ -750,7 +757,8 @@ export class HexGameController extends Laya.Script {
         this.drawResultPanelArt(true);
         this.resultPanel.setChildIndex(this.resultTitle, Math.min(this.resultPanel.numChildren - 1, this.resultPanel.getChildIndex(art) + 3));
         this.resultPanel.setChildIndex(this.resultText, Math.min(this.resultPanel.numChildren - 1, this.resultPanel.getChildIndex(this.resultTitle) + 1));
-        this.resultPanel.setChildIndex(this.resultCtaButton, this.resultPanel.numChildren - 1);
+        if (this.resultBadgeLabel) this.resultPanel.setChildIndex(this.resultBadgeLabel, this.resultPanel.numChildren - 1);
+        parent.setChildIndex(this.resultCtaButton, parent.numChildren - 1);
     }
 
     private configureSingleLineResultLabel(label: Laya.Label, x: number, y: number, width: number, height: number, fontSize: number, color: string, stroke: number, strokeColor: string): void {
@@ -777,8 +785,6 @@ export class HexGameController extends Laya.Script {
         art.width = this.resultPanel.width;
         art.height = this.resultPanel.height;
         art.graphics.clear();
-        art.graphics.drawCircle(-68 * this.getUiScaleX(), 80 * this.getUiScaleY(), 130 * scale, "rgba(139,229,255,0.62)");
-        art.graphics.drawCircle(890 * this.getUiScaleX(), 210 * this.getUiScaleY(), 112 * scale, victory ? "rgba(130,224,58,0.72)" : "rgba(255,51,51,0.62)");
         art.graphics.drawRect(72 * this.getUiScaleX(), 96 * this.getUiScaleY(), 776 * this.getUiScaleX(), 398 * this.getUiScaleY(), RESULT_PANEL_SHADOW);
         art.graphics.drawRect(72 * this.getUiScaleX(), 72 * this.getUiScaleY(), 776 * this.getUiScaleX(), 398 * this.getUiScaleY(), RESULT_PANEL_DARK);
         art.graphics.drawRect(86 * this.getUiScaleX(), 86 * this.getUiScaleY(), 748 * this.getUiScaleX(), 370 * this.getUiScaleY(), RESULT_PANEL_CREAM);
@@ -790,6 +796,9 @@ export class HexGameController extends Laya.Script {
         badge.graphics.drawCircle(460 * this.getUiScaleX(), 72 * this.getUiScaleY(), 92 * scale, RESULT_PANEL_DARK);
         badge.graphics.drawCircle(460 * this.getUiScaleX(), 72 * this.getUiScaleY(), 78 * scale, badgeColor);
         this.drawResultHexTile(badge, 460 * this.getUiScaleX(), 72 * this.getUiScaleY(), 38 * scale, accent, RESULT_PANEL_DARK, 5 * scale);
+        this.resultBadgeLabel = this.getOrCreateLabel(this.resultPanel, RESULT_PANEL_BADGE_LABEL);
+        this.resultBadgeLabel.text = victory ? "胜利" : "失败";
+        this.configureSingleLineResultLabel(this.resultBadgeLabel, 382, 35, 156, 76, 34, "#FFFFFF", 4, RESULT_PANEL_DARK);
 
         const hexStrip = this.getOrCreateSprite(this.resultPanel, RESULT_PANEL_HEX_STRIP_LAYER);
         hexStrip.width = this.resultPanel.width;
@@ -840,14 +849,21 @@ export class HexGameController extends Laya.Script {
     }
 
     private applyTutorialHintSkin(): void {
-        if (!this.tutorialHintSkinPath || !this.hintLabel.parent || this.hintLabel.parent.getChildByName("TutorialHintAssetIcon")) return;
-        const icon = new Laya.Image(this.tutorialHintSkinPath);
-        icon.name = "TutorialHintAssetIcon";
-        icon.width = 64;
-        icon.height = 64;
-        icon.x = this.hintLabel.x + 24;
-        icon.y = this.hintLabel.y + 12;
-        this.hintLabel.parent.addChild(icon);
+        const sample = this.uiRoot.getChildByName("TutorialHintAssetSample") as Laya.Image | null;
+        if (sample) sample.visible = false;
+        if (!this.tutorialHintSkinPath || !this.hintLabel.parent) return;
+        this.tutorialHintIcon = this.getOrCreateImage(this.hintLabel.parent as Laya.Sprite, "TutorialHintAssetIcon", this.tutorialHintSkinPath, this.tutorialHintIcon);
+        this.positionTutorialHintIcon(this.hintLabel.parent as Laya.Sprite);
+    }
+
+    private positionTutorialHintIcon(parent: Laya.Sprite): void {
+        if (!this.tutorialHintIcon || this.tutorialHintIcon.destroyed) return;
+        if (this.tutorialHintIcon.parent !== parent) parent.addChild(this.tutorialHintIcon);
+        this.tutorialHintIcon.width = 64 * this.getUiScaleX();
+        this.tutorialHintIcon.height = 64 * this.getUiScaleY();
+        this.tutorialHintIcon.x = this.hintLabel.x + 24 * this.getUiScaleX();
+        this.tutorialHintIcon.y = this.hintLabel.y + 12 * this.getUiScaleY();
+        this.tutorialHintIcon.visible = this.uiMode === "tutorial";
     }
 
     private setupFirstTapPrompt(): void {
@@ -1235,7 +1251,7 @@ export class HexGameController extends Laya.Script {
         this.unitsRoot.addChild(node);
         const stats = this.createUnitStats(team, kind);
         this.addFallbackUnitVisual(node, team, kind);
-        this.createPrefabVisual(node, this.getUnitPrefabPath(kind), new Laya.Vector3(0, -UNIT_VISUAL_Y_OFFSET, 0), this.getModelScaleVector(this.getUnitModelScale(kind)), this.getUnitColor(team, kind), UNIT_FOOTPRINT_LIMIT, false);
+        this.createPrefabVisual(node, this.getUnitPrefabPath(kind), new Laya.Vector3(0, -UNIT_VISUAL_Y_OFFSET, 0), this.getModelScaleVector(this.getUnitModelScale(kind)), this.getUnitColor(team, kind), UNIT_FOOTPRINT_LIMIT);
         this.units.push({ team, kind, node, hp: stats.hp, maxHp: stats.hp, damage: stats.damage, speed: stats.speed, range: stats.range, attackCooldown: 0, hpBar: this.createUnitHpBar(node, stats.hp) });
     }
 
@@ -1387,13 +1403,21 @@ export class HexGameController extends Laya.Script {
                 visual.transform.localScale = localScale;
                 this.applyModelTint(visual, tintColor);
                 this.setShadowCasting(visual, this.enableProjectedShadows);
-                if (replaceFallback) parent.destroyChildren();
+                if (replaceFallback) this.clearPrefabFallbackChildren(parent);
                 parent.addChild(visual);
                 this.fitPrefabToTile(visual, footprintLimit);
             } catch (error) {
                 console.warn(`Failed to instantiate prefab visual: ${runtimePath}`, error);
             }
         });
+    }
+
+    private clearPrefabFallbackChildren(parent: Laya.Sprite3D): void {
+        for (let i = parent.numChildren - 1; i >= 0; i--) {
+            const child = parent.getChildAt(i);
+            child.removeSelf();
+            child.destroy(true);
+        }
     }
 
     private resolveRuntimePrefabPath(path: string): string {
@@ -1525,17 +1549,56 @@ export class HexGameController extends Laya.Script {
 
     private isUnlockCostTile(tile: HexTileState, focusTile: HexTileState): boolean {
         if (tile.owner !== "neutral" || tile.kind === "void" || tile.kind === "water") return false;
-        return isAdjacent(focusTile.col, focusTile.row, tile.col, tile.row);
+        if (this.firstClaim) return isAdjacent(focusTile.col, focusTile.row, tile.col, tile.row);
+        return this.tiles.some((owned) => owned.owner === "player" && isAdjacent(owned.col, owned.row, tile.col, tile.row));
     }
 
     private canUnlockFocusedTile(tile: HexTileState): boolean {
-        const focusTile = this.unlockCostFocusTile;
-        if (!focusTile || this.money < this.hexCost) return false;
-        return this.isUnlockCostTile(tile, focusTile);
+        return canClaimTile(this.tiles, tile.col, tile.row, this.money, this.hexCost, this.firstClaim);
     }
 
     private calculatePeriodicIncome(): number {
         return calculateIncome(this.tiles, 3);
+    }
+
+    private updateEnemyAi(dt: number): void {
+        if (this.finished || this.pausedForCards || !this.gameStarted) return;
+        this.enemyExpansionTimer += dt;
+        if (this.enemyExpansionTimer < ENEMY_EXPANSION_INTERVAL) return;
+        this.enemyExpansionTimer = 0;
+        const tile = this.pickEnemyExpansionTile();
+        if (!tile) return;
+        this.claimEnemyTile(tile);
+        this.maybeCreateEnemyExpansionBuilding(tile);
+    }
+
+    private pickEnemyExpansionTile(): HexTileState | null {
+        const candidates = this.tiles.filter((tile) => {
+            if (tile.owner !== "neutral" || tile.kind === "water" || tile.kind === "void") return false;
+            return this.tiles.some((owned) => owned.owner === "enemy" && isAdjacent(owned.col, owned.row, tile.col, tile.row));
+        });
+        candidates.sort((a, b) => {
+            const rowScore = b.row - a.row;
+            if (rowScore !== 0) return rowScore;
+            const colScore = Math.abs(a.col - OPENING_TILE_COL) - Math.abs(b.col - OPENING_TILE_COL);
+            if (colScore !== 0) return colScore;
+            return a.col - b.col;
+        });
+        return candidates[0] ?? null;
+    }
+
+    private claimEnemyTile(tile: HexTileState): void {
+        this.tiles = this.tiles.map((item) => item.col === tile.col && item.row === tile.row ? { ...item, owner: "enemy" } : item);
+        this.enemyExpansionCount++;
+        this.updateTileVisual(tile.col, tile.row);
+    }
+
+    private maybeCreateEnemyExpansionBuilding(tile: HexTileState): void {
+        if (this.enemyExpansionCount % ENEMY_BUILDING_EVERY_EXPANSIONS !== 0) return;
+        if (this.enemyExpansionCount <= this.lastEnemyBuildingExpansionCount) return;
+        this.lastEnemyBuildingExpansionCount = this.enemyExpansionCount;
+        const kind = this.chooseEnemyOpeningBuilding();
+        this.createBuildingMarker(this.hexToWorld(tile.col, tile.row), kind, "enemy");
     }
 
     private createUnlockCostItem(tile: HexTileState): Laya.Sprite {
@@ -1626,25 +1689,23 @@ export class HexGameController extends Laya.Script {
                 this.units.splice(i, 1);
                 continue;
             }
-            const opponent = this.findNearestOpponent(unit);
+            const target = this.findUnitTarget(unit);
             unit.attackCooldown = Math.max(0, unit.attackCooldown - dt);
-            if (opponent && Laya.Vector3.distance(unit.node.transform.position, opponent.node.transform.position) < unit.range) {
+            if (target) {
                 if (unit.attackCooldown <= 0) {
-                    opponent.hp -= unit.damage;
+                    if ("maxHp" in target) {
+                        target.hp -= unit.damage;
+                        this.playHitSound();
+                    } else {
+                        this.damageBuilding(target, unit.damage);
+                    }
                     unit.attackCooldown = 0.7;
-                    this.playHitSound();
                 }
                 this.paintTileByUnitPresence(unit);
                 continue;
             }
-            const target = unit.team === "player" ? this.enemyBase.transform.position : this.playerBase.transform.position;
-            if (Laya.Vector3.distance(unit.node.transform.position, target) < 1.1) {
-                if (unit.team === "player") this.enemyBaseHp -= unit.damage * dt;
-                else this.playerBaseHp -= unit.damage * dt;
-                this.paintTileByUnitPresence(unit);
-                continue;
-            }
-            this.moveToward(unit.node, target, unit.speed * dt);
+            const basePosition = unit.team === "player" ? this.enemyBase.transform.position : this.playerBase.transform.position;
+            this.moveToward(unit.node, basePosition, unit.speed * dt);
             this.paintTileByUnitPresence(unit);
         }
     }
@@ -1764,11 +1825,23 @@ export class HexGameController extends Laya.Script {
         return this.findNearestOpponentUnit(unit.team, unit.node.transform.position);
     }
 
+    private findUnitTarget(unit: BattleUnit): BattleTarget | null {
+        const position = unit.node.transform.position;
+        const unitTarget = this.findNearestOpponentUnit(unit.team, position, unit.range);
+        if (unitTarget) return unitTarget;
+        const nearestBuildingTarget = this.findNearestOpponentBuilding(unit.team, unit.node.transform.position, unit.range);
+        const buildingTarget = this.findNearestNonBaseOpponentBuilding(unit.team, unit.node.transform.position, unit.range);
+        if (buildingTarget) return buildingTarget;
+        if (nearestBuildingTarget && (nearestBuildingTarget.node === this.playerBase || nearestBuildingTarget.node === this.enemyBase)) return nearestBuildingTarget;
+        return this.findOpponentBaseBuilding(unit.team, position, Math.max(unit.range, 1.1));
+    }
+
     private findNearestOpponentUnit(team: Team, position: Laya.Vector3, maxRange: number = Number.MAX_VALUE): BattleUnit | null {
         let best: BattleUnit | null = null;
         let bestDistance = Number.MAX_VALUE;
         for (const other of this.units) {
             if (other.team === team) continue;
+            if (other.hp <= 0 || other.node.destroyed) continue;
             const distance = Laya.Vector3.distance(position, other.node.transform.position);
             if (distance <= maxRange && distance < bestDistance) {
                 bestDistance = distance;
@@ -1776,6 +1849,113 @@ export class HexGameController extends Laya.Script {
             }
         }
         return best;
+    }
+
+    private findNearestOpponentBuilding(team: Team, position: Laya.Vector3, maxRange: number = Number.MAX_VALUE): SpawnBuilding | null {
+        let best: SpawnBuilding | null = null;
+        let bestDistance = Number.MAX_VALUE;
+        for (const building of this.buildings) {
+            if (building.team === team) continue;
+            if (this.getBuildingCurrentHp(building) <= 0 || building.node.destroyed) continue;
+            const distance = Laya.Vector3.distance(position, building.node.transform.position);
+            if (distance <= maxRange && distance < bestDistance) {
+                bestDistance = distance;
+                best = building;
+            }
+        }
+        return best;
+    }
+
+    private findNearestNonBaseOpponentBuilding(team: Team, position: Laya.Vector3, maxRange: number = Number.MAX_VALUE): SpawnBuilding | null {
+        let best: SpawnBuilding | null = null;
+        let bestDistance = Number.MAX_VALUE;
+        for (const building of this.buildings) {
+            if (building.node === this.playerBase || building.node === this.enemyBase) continue;
+            if (building.team === team) continue;
+            if (this.getBuildingCurrentHp(building) <= 0 || building.node.destroyed) continue;
+            const distance = Laya.Vector3.distance(position, building.node.transform.position);
+            if (distance <= maxRange && distance < bestDistance) {
+                bestDistance = distance;
+                best = building;
+            }
+        }
+        return best;
+    }
+
+    private findOpponentBaseBuilding(team: Team, position: Laya.Vector3, maxRange: number): SpawnBuilding | null {
+        const baseNode = team === "player" ? this.enemyBase : this.playerBase;
+        const baseTarget = this.buildings.find((building) => building.team !== team && building.node === baseNode && this.getBuildingCurrentHp(building) > 0 && !building.node.destroyed) ?? null;
+        if (!baseTarget || Laya.Vector3.distance(position, baseTarget.node.transform.position) > maxRange) return null;
+        return baseTarget;
+    }
+
+    private damageBuilding(building: SpawnBuilding, damage: number): void {
+        if (building.node === this.playerBase) this.playerBaseHp = Math.max(0, this.playerBaseHp - damage);
+        else if (building.node === this.enemyBase) this.enemyBaseHp = Math.max(0, this.enemyBaseHp - damage);
+        else building.hp = Math.max(0, building.hp - damage);
+        this.playHitSound();
+        this.playBuildingHitFeedback(building);
+    }
+
+    private playBuildingHitFeedback(building: SpawnBuilding): void {
+        const node = building.node;
+        if (node.destroyed) return;
+        this.restoreBuildingHitFeedback(building);
+
+        const feedbackToken = ++this.buildingHitFeedbackToken;
+        building.feedbackToken = feedbackToken;
+        building.feedbackPosition = node.transform.position.clone();
+        building.feedbackScale = node.transform.localScale.clone();
+        const shakeDirection = building.team === "player" ? -1 : 1;
+        node.transform.position = new Laya.Vector3(building.feedbackPosition.x + 0.08 * shakeDirection, building.feedbackPosition.y + 0.03, building.feedbackPosition.z - 0.04 * shakeDirection);
+        node.transform.localScale = new Laya.Vector3(building.feedbackScale.x * 1.08, building.feedbackScale.y * 1.08, building.feedbackScale.z * 1.08);
+
+        const flashMaterial = this.getBuildingHitFlashMaterial(COLOR_ENEMY_TILE);
+        const rendererStates: BuildingFeedbackRendererState[] = [];
+        const stack: Laya.Node[] = [node];
+        while (stack.length > 0) {
+            const current = stack.pop()!;
+            const renderer = this.getNodeRenderer(current);
+            if (renderer) {
+                rendererStates.push({
+                    renderer,
+                    sharedMaterial: renderer.sharedMaterial,
+                    sharedMaterials: renderer.sharedMaterials ? renderer.sharedMaterials.slice() : undefined,
+                    hadSharedMaterial: renderer.sharedMaterial !== undefined,
+                    hadSharedMaterials: renderer.sharedMaterials !== undefined,
+                });
+                renderer.sharedMaterial = flashMaterial;
+                renderer.sharedMaterials = [flashMaterial];
+            }
+            for (let i = 0; i < current.numChildren; i++) stack.push(current.getChildAt(i));
+        }
+        building.feedbackRenderers = rendererStates;
+
+        Laya.timer.once(110, this, () => {
+            if (building.feedbackToken !== feedbackToken) return;
+            this.restoreBuildingHitFeedback(building);
+        });
+    }
+
+    private restoreBuildingHitFeedback(building: SpawnBuilding): void {
+        if (building.node.destroyed) return;
+        if (building.feedbackPosition) building.node.transform.position = building.feedbackPosition;
+        if (building.feedbackScale) building.node.transform.localScale = building.feedbackScale;
+        for (const state of building.feedbackRenderers ?? []) {
+            if (state.hadSharedMaterial) state.renderer.sharedMaterial = state.sharedMaterial;
+            else delete state.renderer.sharedMaterial;
+            if (state.hadSharedMaterials) state.renderer.sharedMaterials = state.sharedMaterials;
+            else delete state.renderer.sharedMaterials;
+        }
+        building.feedbackPosition = undefined;
+        building.feedbackScale = undefined;
+        building.feedbackRenderers = undefined;
+        building.feedbackToken = undefined;
+    }
+
+    private getBuildingHitFlashMaterial(color: string): Laya.Material {
+        if (!this.buildingHitFlashMaterial) this.buildingHitFlashMaterial = this.createMaterial(color);
+        return this.buildingHitFlashMaterial;
     }
 
     private findBuildPosition(): Laya.Vector3 {
@@ -1818,7 +1998,8 @@ export class HexGameController extends Laya.Script {
         const centerTile = this.findNearestTileByWorld(position);
         if (!centerTile) return;
         for (const tile of this.tiles) {
-            if (tile.kind === "void" || tile.kind === "water") continue;
+            if (tile.kind === "void" || tile.kind === "water" || tile.kind === "base") continue;
+            if (tile.owner !== "neutral" && tile.owner !== team) continue;
             if (tile.col === centerTile.col && tile.row === centerTile.row) this.paintTileOwner(tile, team, true);
             else if (isAdjacent(centerTile.col, centerTile.row, tile.col, tile.row)) this.paintTileOwner(tile, team, true);
         }
@@ -1872,10 +2053,6 @@ export class HexGameController extends Laya.Script {
         this.playTileUnlockFlip(node);
         const color = this.getTileColor(tile);
         node.meshRenderer.sharedMaterial = this.createTileSurfaceMaterial(color);
-        this.setShadowCasting(node, this.enableProjectedShadows);
-        this.setShadowReceiving(node, this.enableProjectedShadows);
-        const matchedVisual = node.getChildByName("MatchedHexTileVisual") as Laya.Sprite3D | null;
-        if (matchedVisual) this.applyModelTint(matchedVisual, color);
     }
 
     private playTileUnlockFlip(node: Laya.MeshSprite3D): void {
@@ -1929,7 +2106,8 @@ export class HexGameController extends Laya.Script {
         this.playVictoryTileSpread(winner);
         this.drawResultPanelArt(victory);
         this.resultPanel.visible = true;
-        this.ctaButton.visible = true;
+        this.resultCtaButton.visible = true;
+        this.ctaButton.visible = false;
         this.resultTitle.text = victory ? "领地守住了！" : "敌军压境！";
         this.resultText.text = victory ? "完整版解锁更多卡组与关卡" : "下载完整版继续挑战";
         Laya.stage.event(GameEvents.GAME_FINISHED, { victory });
@@ -1950,8 +2128,8 @@ export class HexGameController extends Laya.Script {
     }
 
     private hexToWorld(col: number, row: number): Laya.Vector3 {
-        const x = (col - 3) * HEX_X_STEP + (row % 2 === 1 ? HEX_ROW_X_OFFSET : 0);
-        const z = (row - 4.5) * HEX_Z_STEP;
+        const x = (col - 3) * HEX_X_STEP;
+        const z = (row - 4.5) * HEX_Z_STEP + (col % 2 === 1 ? HEX_COL_Z_OFFSET : 0);
         return new Laya.Vector3(x, this.getTileElevation(row), z);
     }
 
@@ -2017,14 +2195,16 @@ export class HexGameController extends Laya.Script {
         return material;
     }
 
-    private createTileSurfaceMaterial(hex: string): Laya.Material {
-        if (!this.enableProjectedShadows) return this.createMaterial(hex);
+    private createLitTileMaterial(hex: string): Laya.BlinnPhongMaterial {
         const material = new Laya.BlinnPhongMaterial();
         material.albedoColor = this.colorFromHex(hex);
         material.albedoIntensity = 1;
-        material.specularColor = new Laya.Color(0.05, 0.05, 0.05, 1);
-        material.shininess = 0.08;
+        material.specularColor = new Laya.Color(0.08, 0.08, 0.08, 1);
         return material;
+    }
+
+    private createTileSurfaceMaterial(hex: string): Laya.Material {
+        return this.createLitTileMaterial(hex);
     }
 
     private colorFromHex(hex: string): Laya.Color {
@@ -2042,6 +2222,7 @@ type BuildingCategory = "defense" | "resource" | "unit";
 type UnitKind = "spear" | "archer" | "cavalry";
 type BuildingKind = "tower" | "goldMine" | "spearBarracks" | "archerBarracks" | "cavalryBarracks";
 type CardId = "arrowTower" | "goldMine" | "spearBarracks" | "archerBarracks" | "cavalryBarracks";
+type BattleTarget = BattleUnit | SpawnBuilding;
 
 interface UnitStats {
     hp: number;
@@ -2076,6 +2257,18 @@ interface SpawnBuilding {
     unitKind?: UnitKind;
     goldPerCycle: number;
     hpBar: Laya.Sprite;
+    feedbackToken?: number;
+    feedbackPosition?: Laya.Vector3;
+    feedbackScale?: Laya.Vector3;
+    feedbackRenderers?: BuildingFeedbackRendererState[];
+}
+
+interface BuildingFeedbackRendererState {
+    renderer: RendererLike;
+    sharedMaterial?: Laya.Material;
+    sharedMaterials?: Laya.Material[];
+    hadSharedMaterial: boolean;
+    hadSharedMaterials: boolean;
 }
 
 interface UiLayers {

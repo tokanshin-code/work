@@ -1,0 +1,30 @@
+<h2>A 方向修订：文字可替换且不换行</h2>
+<p class="subtitle">根据你的要求，面板里的标题、描述和按钮文案都不烘焙进矢量图，全部由 Laya 文本节点运行时显示，方便后续直接替换。</p>
+
+<div class="mockup">
+  <div class="mockup-header">文字规则示意</div>
+  <div class="mockup-body" style="background:#16b5f0; display:flex; justify-content:center; padding:24px;">
+    <div style="width:270px; height:480px; position:relative; background:linear-gradient(#56d7ff,#159ed8); border-radius:26px; overflow:hidden; font-family:sans-serif; color:#123f55;">
+      <div style="position:absolute; left:28px; right:28px; top:92px; height:250px; background:#fff7d6; border-radius:30px; border:7px solid #123f55; box-shadow:0 12px 0 #0a2b3b;">
+        <div style="position:absolute; left:50%; top:-52px; width:112px; height:112px; transform:translateX(-50%); background:#ffcf3d; border-radius:56px; border:7px solid #123f55;"></div>
+        <div style="position:absolute; left:50%; top:-17px; width:40px; height:35px; transform:translateX(-50%); background:#82e03a; clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);"></div>
+        <div style="position:absolute; left:26px; right:26px; top:76px; height:34px; border:3px dashed #3e83a0; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:900; white-space:nowrap; overflow:hidden;">ResultTitle：单行可替换</div>
+        <div style="position:absolute; left:26px; right:26px; top:124px; height:26px; border:3px dashed #d98720; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; white-space:nowrap; overflow:hidden;">ResultText：完整版解锁更多卡组与关卡</div>
+        <div style="position:absolute; left:28px; top:186px; width:50px; height:44px; background:#82e03a; clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);"></div>
+        <div style="position:absolute; left:82px; top:186px; width:50px; height:44px; background:#c6c4c5; clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);"></div>
+        <div style="position:absolute; left:136px; top:186px; width:50px; height:44px; background:#ff3333; clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);"></div>
+      </div>
+      <div style="position:absolute; left:42px; right:42px; bottom:72px; height:68px; border-radius:34px; background:#ff7a1a; border:6px solid #123f55; box-shadow:0 9px 0 #9d3c10; display:flex; align-items:center; justify-content:center; color:white; font-weight:900; font-size:22px; white-space:nowrap;">CTA 文案可替换</div>
+    </div>
+  </div>
+</div>
+
+<div class="options">
+  <div class="option" data-choice="approve-single-line-text" onclick="toggleSelect(this)">
+    <div class="letter">✓</div>
+    <div class="content">
+      <h3>确认修订</h3>
+      <p>实施时描述文本固定单行显示，后续通过代码字段替换，不放进 SVG/Figma 图形资源。</p>
+    </div>
+  </div>
+</div>
