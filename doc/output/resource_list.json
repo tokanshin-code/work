@@ -421,6 +421,28 @@
       "lock": false,
       "uuid": "res-27",
       "ignore": false
+    },
+    {
+      "id": 31,
+      "name": "产兵进度圈底图",
+      "path": "resources/ui/spawn_progress_bg.png",
+      "type": "picture",
+      "description": "用户提供的黑色圆形底图，用作建筑产兵冷却进度圈背景",
+      "status": "matched",
+      "lock": false,
+      "uuid": "res-28",
+      "ignore": false
+    },
+    {
+      "id": 32,
+      "name": "产兵进度转圈圆环",
+      "path": "resources/ui/spawn_progress_ring.png",
+      "type": "picture",
+      "description": "用户提供的绿色圆环图，用旋转角度表现建筑产兵冷却进度",
+      "status": "matched",
+      "lock": false,
+      "uuid": "res-29",
+      "ignore": false
     }
   ]
 }

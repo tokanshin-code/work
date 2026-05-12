@@ -18,23 +18,45 @@
 - 水面底板使用 `assets/resources/water/water_surface.png`，运行时在 `HexGameController.createWaterFloor` 中先于棋盘创建 `WaterFloor` 平面并用 `Laya.loader.load(..., Laya.Loader.TEXTURE2D)` 贴到 `Laya.UnlitMaterial`；平面高度 `WATER_FLOOR_Y=-0.22`，低于六边形柱体避免遮挡。
 - 场景层级中需要显示水面层：`assets/Scene.ls` 已通过 `doc/output/water-layer.game.json` 增量创建 `Scene3D/WaterLayer`，`HexGameController.getWaterLayer` 会优先使用该节点并将运行时 `WaterFloor` 挂到其下。
 - `HexGameController` 挂在 `Scene3D/HexBoard` 上时，`this.owner.scene` 返回的就是 `Scene3D`，不能再假设它是 2D 根场景并二次查找 `Scene3D`；已用 `getScene3D()` 同时兼容 `owner.scene` 为 `Scene3D` 或根场景，否则会导致 `getWaterLayer()` 初始化失败、棋盘不生成、预览停留在默认侧视角。
-- 开局流程现在是直接弹三选一建筑卡：`onAwake()` 先把 `(3,7)` 设为绿色己方空地并调用 `showOpeningBuildChoice()`；选卡后 `applyCard()` 在 `InitialBuildSlot` 生成建筑并显示相邻金币解锁点，`onStageClick()` 只负责付费解锁相邻地块，不再点击黄色/高亮地块或解锁后弹卡。
+- 开局流程现在是直接弹三选一建筑卡：`OPENING_TILE_COL/ROW` 指向已有 base 地块 `(3,8)`，`onAwake()` 不再额外 `claimTile` 相邻地块；选卡后 `applyCard()` 在 `InitialBuildSlot`/base 位置生成建筑并显示相邻金币解锁点。
 - 付费解锁新地块后也会进入三选一：`onStageClick()` 先 `claimTile` 并扣金币，再把 `pendingInitialBuildPosition` 设为新地块世界坐标并调用 `showCards()`；`applyCard()` 只有 `!gameStarted` 的开局选卡才使用 `InitialBuildSlot`，后续选卡会在刚解锁地块动态创建建筑。
+- 当前玩法口径已统一为“选卡建造 -> 点击金币解锁 -> 新地块选卡建造”；`onStageClick()` 必须通过 `canUnlockFocusedTile()` 限制只能点击当前焦点周围带金币 UI 的地块。`goldMine` 不产兵，金币收益由金矿自身 cooldown 完成时发放，`calculatePeriodicIncome()` 只保留地块基础收入。
+- 卡牌现在全部映射为建筑：`arrowTower -> tower`、`goldMine -> goldMine`、`spearBarracks/archerBarracks/cavalryBarracks -> 对应兵营`；三选一由防御/资源/兵种三类各给一个。资源和兵种建筑都走 `updateBuildingSpawns()` 的 cooldown，金矿完成进度加金币，兵营完成进度生产对应 `UnitKind`。圆形进度条不要再旋转整张环图，`drawSpawnProgress()` 通过 `ring.mask` 和 `drawPie()` 扇形蒙版显示填充。
+- 敌方开局不再硬编码为固定枪兵营：`startBattleAfterInitialCard()` 通过 `chooseEnemyOpeningBuilding()` 从 `enemyOpeningBuildings` 中自动选择兵种建筑并传给 `activateInitialBase()`。金矿提速：`resourceRate=1.5`，每轮 `goldPerCycle=goldSupplyAmount`，避免扩张金币不足。
+- 单位速度已为可读性下调：`createUnitStats()` 中玩家枪兵 `1.35`、弓兵 `1.2`、骑兵 `2.0`、敌方单位 `1.6`；不要恢复旧的 `2.6/2.8/4/4.4`，否则单位会快速穿越多格。
+- 胜负规则：`removeDestroyedBuildings()` 清理血条归零建筑；`resolveBuildingElimination()` 在一方建筑数为 0 时结算，`resolveTimedVictory()` 在时间耗尽时按 `countOwnedTiles()` 判胜且平局玩家胜。`finishGame(victory, winner)` 会调用 `playVictoryTileSpread(winner)`，按获胜方 base 行方向扩散翻转所有地块并改为获胜方颜色。
+- 获胜方地块扩散节奏由 `VICTORY_SPREAD_STEP_MS` 控制，当前为 `150ms`，不要恢复旧的 `70ms`，否则扩散翻转过快看不清。
+- 地块动态染色：`createBuildingMarker()` 调用 `paintNeighborTilesFromBuilding()`，把建筑所在地块和周边 6 格强制染成建筑阵营色；`updateUnits()` 中每个士兵通过 `paintTileByUnitPresence()` 沿路径染色。`resolveContestedTileColor()` 在同格有双方士兵时返回 `neutral`，`paintTileOwner()` 通过 `TILE_PAINT_COOLDOWN_MS=160` 防止颜色高频闪烁。
 - 资源对标已接入本地 `D:\项目资产\3D资产\共享资产\kenney_hexagon-kit`：优先使用 `assets/match/Models/GLB format/` 下的 GLB（如 `building-archery.glb`、`building-cabin.glb`、`building-castle.glb`、`building-wizard-tower.glb`、`grass.glb`），场景 `.ls` 中 `_$prefab` 仍需写 UUID，资源清单和脚本属性可记录项目相对路径。
 - `HexGameController` 过去只把 `towerPrefabPath`/`barracksPrefabPath` 作为场景属性保存，运行时 `createBuildingMarker` 和 `spawnUnit` 仍创建程序化 Box/Capsule，导致资源对标后模型看起来没生效；已改为先显示兜底几何体，再异步加载 `Laya.Loader.HIERARCHY` 并用匹配模型替换子视觉节点。
 - 资源抽离规则：每个视觉类型只保留一个对标样例资产（六边形地块、卡牌面板、卡牌选项卡、结算弹窗、教程提示），运行时通过克隆/skin 复用；不要为每个格子或每个选项创建独立资源条目。
 - 编辑器层级预览规则：仅在脚本属性里保存资源路径不够直观，需在 `assets/Scene.ls` 放置可见样例节点；当前 `Scene3D/EditorAssetSamples/HexTileAssetSample` 用于地块模型预览，`CardPanelAssetSample`、`CardOptionAssetSample`、`ResultPanelAssetSample`、`TutorialHintAssetSample` 用于 UI 预览，运行时通过 `hideEditorAssetSamples()` 隐藏 3D 编辑器样例。
 - 用户要求后续场景搭建优先以预制体与清晰层级组织实现，方便在 LayaAir 编辑器中手动调整；除非确有必要，避免完全依赖运行时动态生成场景结构。
 - `Laya.loader.load(..., Laya.Loader.HIERARCHY)` 加载 `.lh` 时运行时返回值可能是带 `create()` 的预制体工厂，而不是可直接 `clone` 的 `Sprite3D`；动态模型实例化需优先调用 `create()`，并且只有实例创建成功后再移除兜底几何体，否则会出现模型不可见。
-- 当前 3D 观感改为运行时显式设置主相机：透视镜头、`fieldOfView=42`、位置 `(0,13,11)`、欧拉角 `(-55,0,0)`；仅改 `.ls` 相机配置可能被编辑器缓存或旧运行状态影响，脚本中保留 `setupCamera()` 防回退。
+- 当前 3D 观感改为运行时显式设置主相机：透视镜头、`fieldOfView=42`、位置 `(0,31,11.5)`、欧拉角 `(-66,0,0)`；仅改 `.ls` 相机配置可能被编辑器缓存或旧运行状态影响，脚本中保留 `setupCamera()` 防回退。当前优先完整显示边缘地块，保留较多水面安全边距；若后续想减少上下水面空白，可在保持完整边缘的前提下小幅降低 Y 或降低 Z，但不要回到边缘地块贴边裁切的构图。
 - 开局编辑器层级方案已接入：`assets/Scene.ls` 中 `HexBoard/DefaultClickableTileMarker` 标记固定首点 `(3,7)`，`Buildings/InitialBuildSlot` 承接首张卡生成的建筑，`GameUIRoot/UnlockCostLayer` 显示相邻可解锁地格费用；费用不足用 `#FF3B30` 红字，充足用黄色。
 - 模型不超格通过 `HexGameController.ts` 的 `MODEL_TILE_SCALE_CAP=0.42` 统一限制，基地缩放 `BASE_VISUAL_SCALE=0.45`；运行时 `setupLighting()` 会强化环境光与方向光，不要只改场景静态灯光后移除此兜底。
 - Kenney 解包模型的 `.lh` 使用 `MeshRenderer.sharedMaterials` 数组引用 `glTFPBR` 材质，之前只尝试改 `sharedMaterial.albedoIntensity`，加载成功后还会删除带阵营色的兜底几何体，导致模型颜色仍是资源原色/发灰；现在 `createPrefabVisual(..., tintColor)` 会在实例化后用 `applyModelTint()` 同时覆盖 `sharedMaterial` 和 `sharedMaterials` 为可读的 `UnlitMaterial` 阵营/建筑色。
 - 资源对标已接入本地 `D:\项目资产\试玩资产\定制试玩减面资产`：按本次命令保留 FBX 原文件不解包，复制到 `assets/match/` 并将贴图集中复制到 `assets/match/textures/`；`assets/Scene.ls` 的 `HexGameController` 资源属性已改为引用本地士兵、丧尸 Boss、FGH 主塔、主楼、城墙和喷火器 FBX。
 - 模型高度统一以 `GROUND_SURFACE_Y = HEX_TILE_HEIGHT * 0.5` 和 `MODEL_BASE_Y = GROUND_SURFACE_Y + 0.04` 为基准，建筑/基地不要再放回 `y=0`；解锁费用 UI 现在是 `Sprite(Image coin_2 + Label)`，优先用 `projectWorldToUi()` 相机投影定位；`CTAButton` 开局隐藏，`finishGame()` 才显示。
-- 六边形地块新增 `createHexSideShadow()` 暗色侧面层，解锁时 `playTileUnlockFlip()` 对地块节点做短暂翻转动画；如果后续替换地块模型，需保留侧面阴影和翻转反馈逻辑。
+- 六边形地块已去掉 `createHexSideShadow()` 暗色侧面贴片，改由真实光照/阴影表现侧面明暗；解锁时 `playTileUnlockFlip()` 对地块节点做短暂翻转动画，后续优化需保持地块使用 `createTileSurfaceMaterial()`，不要在 `updateTileVisual()` 里把地块主材质改回 `UnlitMaterial`。
 - 本地 FBX 与旧 Kenney `.lh` 原始单位差异很大，不能再依赖 `0.42/0.38/0.55` 这类固定缩放。`createPrefabVisual(..., footprintLimit)` 现在会实例化后通过 `fitPrefabToTile()` 读取 `MeshRenderer.bounds`，只把超过地格 footprint 的模型等比缩小；建筑/地块用 `MODEL_FOOTPRINT_LIMIT = HEX_TILE_RADIUS * 1.15`，单位用 `UNIT_FOOTPRINT_LIMIT = HEX_TILE_RADIUS * 0.58`。
 - 为避免自动包围盒适配无法完全匹配广告视觉比例，`HexGameController` 已暴露 `buildingModelScale`、`soldierModelScale`、`bossModelScale`、`tileModelScale` 四个 Inspector 参数，当前场景默认值分别为 `0.28/0.22/0.2/0.42`；`Scene3D/EditorAssetSamples` 下有 `BuildingScaleSample`、`SoldierScaleSample`、`BossScaleSample` 可在编辑器中观察和手调参考，运行时会由 `hideEditorAssetSamples()` 隐藏。
 - 基地视觉已改为组合结构：`PlayerBase` / `EnemyBase` 是普通 `Sprite3D` 容器，不再挂一体化 prefab；运行时 `setupBaseComposite()` 会创建 `BaseTileVisual` 和 `BaseBuildingVisual` 两个子节点。基地建筑资源通过 `baseBuildingPrefabPath` 指定，比例通过 `baseBuildingModelScale` 单独调；箭塔、兵营、龙巢分别使用 `towerModelScale`、`barracksModelScale`、`dragonNestModelScale`，士兵和 Boss 分别使用 `soldierModelScale`、`bossModelScale`。
 - `CardChoicePanel` 下的 `CardPanelAssetSample` / `CardOptionAssetSample` / 旧 `CardTitle` 只是编辑器预览样例，运行时必须在 `styleCardPanel()` 中隐藏；否则卡牌弹窗左上会出现大白色样例图。卡牌主标题使用运行时创建的 `CardPanelTitle`，当前文案为“选择一项升级”。
+- 士兵可见性依赖两层保障：`spawnUnit()` 先创建更大的彩色 Capsule 兜底，并在 `createPrefabVisual(..., replaceFallback=false)` 加载美术模型时保留兜底；本地士兵 `.lh` 存在依赖缺失 warning 时，仍能看到彩色士兵和单位血条。`onUpdate()` 的 dt 需要 clamp 到 0.1 秒，避免预览/卡牌切换后的大 delta 导致士兵刚生成就结算。
+- 建筑按战斗实体处理：`SpawnBuilding` 必须携带 `hpBar`，`createBuildingMarker()` 和 `activateInitialBase()` 创建建筑时同步创建建筑血条；`updateBuildingHpBars()` 每帧投影到 UI 层显示 `100` 等具体血量。单位血条使用 `UNIT_HP_BAR_WIDTH/HEIGHT` 控制尺寸，避免在棋盘中部不可读。
+- 不要再显示旧的 `PlayerHpBar` / `EnemyHpBar` 全局基地血条；它们会和建筑实体血条重叠，并导致敌方红血条两侧露出绿色。当前 `updateHpBars()` 只负责隐藏旧条，基地血量由对应 `SpawnBuilding.hpBar` 通过 `getBuildingCurrentHp()` 显示。
 - 编辑器分层资源样例已补齐：`Scene3D/EditorAssetSamples/BuildingSamples` 展示 `BaseBuildingSample`、`TowerSample`、`BarracksSample`、`DragonNestSample`、`FireEffectSample`；`UnitSamples` 展示 `SoldierLayerSample`、`BossLayerSample`。`WaterLayer/WaterSurfaceSample` 用作水面贴片分层占位，运行时 `hideEditorWaterSample()` 会先隐藏它再创建动态 `WaterFloor`。
+- 手指引导图运行时引用固定为 `downloads/2d/ui/hand.png`（`HexGameController.handIconPath` 和 `assets/Scene.ls` 保持该路径）；如用户提供中文临时文件 `手.png`，应覆盖到正式 `hand.png` 并删除临时中文命名文件，避免资源清单路径变化。
+- 程序化水面底板用 `PrimitiveMesh.createPlane` + `UnlitMaterial` 时，`UnlitMaterial.RENDERMODE_OPAQUE` 默认 `cull = CULL_BACK`，斜俯视/俯视镜头可能看到平面背面导致水面不显示；`HexGameController.createWaterFloor()` 必须设置 `material.cull = Laya.RenderState.CULL_NONE`，并显式保持 `water.transform.rotationEuler = new Laya.Vector3(0, 0, 0)`。
+- 投射阴影方案已升级为地块也参与真实阴影：`HexGameController.enableProjectedShadows=true` 时，方向光用 `Laya.ShadowMode.SoftLow`、`shadowStrength=0.72`、更低侧光方向 `(-1.05,-0.28,-0.72)`；建筑/单位/加载模型和地块 `castShadow`，地块/水面 `receiveShadow`。地块接收阴影需要使用 `BlinnPhongMaterial`，纯 `UnlitMaterial` 接收阴影不明显。
+- 建筑产兵 CD 圈使用用户提供的 `resources/ui/spawn_progress_bg.png` 黑色底图和 `resources/ui/spawn_progress_ring.png` 绿色圆环；当前 `drawSpawnProgress()` 给圆环设置 `mask` 并用 `drawPie()` 扇形遮罩显示进度，卡牌暂停和结算暂停时冷却冻结。
+- 金币图标正式资源固定为 `downloads/2d/ui/coin_2.png`，HUD 钱包通过 `WalletCoinIcon` 显示在 `MoneyLabel` 数字前方且层级高于背景；`refreshHud()` 保留前导空格给图标留位，解锁费用 UI 也复用同一路径并把数字放在图标右侧。
+- 六边形地块需要保留参考图式微缝但不能过宽：当前为上一版 60% 缝隙，`HEX_TILE_GAP=0.048`，`HEX_X_STEP=1.47`，`HEX_ROW_X_OFFSET=0.735`，`HEX_Z_STEP=1.273`；不要改回刚好相切的 `sqrt(3)*radius / 1.5*radius`，否则水面/底色不会从格子之间露出。
+- 地块解锁动画现在由 `playTileUnlockFlip()` 执行三段式 Tween：先清理 `node.transform` 旧 Tween，升到 `TILE_UNLOCK_FLIGHT_HEIGHT=1.35`（原 0.75 的 180%），空中围绕 X 轴按 `TILE_UNLOCK_ROTATION_DEGREES=720` 上下翻转两周，再落回并恢复原始 position/rotation；不要改成 Y 轴横向转圈，且后续优化不能省略结束复位，否则连续点击后地块会漂移或边线错位。
+- 用户要求导入或替换到地块上的 3D 模型，在大小比例表现上不超过单格六边形地块可用范围的 90%，应完整放置在单格内且不压到相邻格；后续模型导入、对标和缩放参数调整都需按此约束检查。
+- 参考图配色已集中到 `HexGameController.ts` 顶部常量：水面/相机背景 `COLOR_WATER=#7FE6FF`（渲染后接近亮青蓝）、中立地块 `COLOR_NEUTRAL_TILE=#BDBDBD`、己方 `COLOR_PLAYER_TILE=#97DD3E`、敌方 `COLOR_ENEMY_TILE=#C93D42`、缝线 `COLOR_TILE_OUTLINE=#9A9A9A`；水面底板不再应用 `water_surface.png` 为 albedoTexture，避免纹理把水面压暗。
+- 棋盘采用 2.5D 错层空间：`HEX_ROW_ELEVATION_STEP=0.045`，`hexToWorld()` 的 y 值由 `getTileElevation(row)` 生成；建筑/基地/单位/UI 投影需用 `getTileSurfaceY()` 和 `getModelBaseY()` 对齐地块高度，不要再把新对象固定放到全局 `MODEL_BASE_Y`，否则会在错层地块上悬空或陷入。
+- 结束面板采用运行时矢量绘制的“六边形领地徽章”风格：`ResultTitle`、`ResultText` 和 `ResultCTAButton` 文案必须保留为 Laya 文本节点，禁止烘焙进 SVG/PNG；描述文本单行显示，不换行，后续换文案只改文本字段。
+- 需求变更记录已在 `doc/output/requirements.md` 的“增量变更 v40：现有玩法逻辑整理”中统一收口当前玩法口径：开局 base 选建筑、金币解锁焦点邻格、解锁后再选建筑、建筑/兵种/金矿/染色/胜负等规则以后续实现应优先对齐该段，而不是旧的定时卡牌或首次点击占格口径。

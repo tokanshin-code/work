@@ -1,7 +1,62 @@
 {
   "version": "LAYAMATERIAL:04",
   "props": {
-    "textures": [],
+    "textures": [
+      {
+        "path": "res://23588759-b927-464c-9ac8-fc0cd059bc52",
+        "constructParams": [
+          512,
+          512,
+          1,
+          false,
+          false,
+          true
+        ],
+        "propertyParams": {
+          "filterMode": 1,
+          "wrapModeU": 1,
+          "wrapModeV": 1,
+          "anisoLevel": 1
+        },
+        "name": "u_NormalTexture"
+      },
+      {
+        "path": "res://23588759-b927-464c-9ac8-fc0cd059bc52",
+        "constructParams": [
+          512,
+          512,
+          1,
+          false,
+          false,
+          true
+        ],
+        "propertyParams": {
+          "filterMode": 1,
+          "wrapModeU": 1,
+          "wrapModeV": 1,
+          "anisoLevel": 1
+        },
+        "name": "u_BaseColorTexture"
+      },
+      {
+        "path": "res://23588759-b927-464c-9ac8-fc0cd059bc52",
+        "constructParams": [
+          512,
+          512,
+          1,
+          false,
+          false,
+          true
+        ],
+        "propertyParams": {
+          "filterMode": 1,
+          "wrapModeU": 1,
+          "wrapModeV": 1,
+          "anisoLevel": 1
+        },
+        "name": "u_MetallicRoughnessTexture"
+      }
+    ],
     "type": "glTFPBR",
     "renderQueue": 2000,
     "materialRenderMode": 0,
@@ -227,8 +282,10 @@
       1
     ],
     "defines": [
+      "NORMALMAP",
       "BASECOLORMAP",
-      "BASECOLORMAP_TRANSFORM"
+      "BASECOLORMAP_TRANSFORM",
+      "METALLICROUGHNESSMAP"
     ]
   }
 }
