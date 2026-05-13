@@ -42,12 +42,16 @@ export function getTile(tiles: HexTileState[], col: number, row: number): HexTil
 }
 
 export function isAdjacent(aCol: number, aRow: number, bCol: number, bRow: number): boolean {
+    return getHexDistance(aCol, aRow, bCol, bRow) === 1;
+}
+
+export function getHexDistance(aCol: number, aRow: number, bCol: number, bRow: number): number {
     const a = offsetToAxial(aCol, aRow);
     const b = offsetToAxial(bCol, bRow);
     const dq = Math.abs(a.q - b.q);
     const dr = Math.abs(a.r - b.r);
     const ds = Math.abs((-a.q - a.r) - (-b.q - b.r));
-    return Math.max(dq, dr, ds) === 1;
+    return Math.max(dq, dr, ds);
 }
 
 export function canClaimTile(tiles: HexTileState[], col: number, row: number, money: number, hexCost: number, isFirstClaim: boolean): boolean {
@@ -73,5 +77,5 @@ export function calculateIncome(tiles: HexTileState[], rewardPerTile: number): n
 }
 
 function offsetToAxial(col: number, row: number): { q: number; r: number } {
-    return { q: col - Math.floor((row - (row & 1)) / 2), r: row };
+    return { q: col, r: row - Math.floor((col - (col & 1)) / 2) };
 }

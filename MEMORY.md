@@ -64,3 +64,4 @@
 - 建筑受击反馈在 `HexGameController.playBuildingHitFeedback()` 中保持轻量：短时间偏移 `transform.position`、放大 `transform.localScale`、临时替换缓存的红色 `UnlitMaterial`，再用 `Laya.timer.once` 恢复原位置/缩放/材质；重复受击前会先恢复旧 baseline，并用 controller 级单调递增 token 防止旧 timer 覆盖新反馈，不能用 building 上的 active token 自增，因为 restore 后会清空并导致旧 timer 再次匹配。恢复材质时需区分 `sharedMaterials` 原本是否为 `undefined`，原本缺失则删除字段。
 - 敌方扩张 AI 已接入 `HexGameController.updateEnemyAi()`：只在开战、未暂停、未结算时每 `ENEMY_EXPANSION_INTERVAL=5` 秒从敌方相邻的中立非水/非 void 格中选一格，优先更靠玩家侧的大 row、再靠开局列 `OPENING_TILE_COL`；每 `ENEMY_BUILDING_EVERY_EXPANSIONS=2` 次扩张用 `chooseEnemyOpeningBuilding()` 轮换生成敌方建筑，不会弹出玩家卡牌 UI。建筑邻格染色必须跳过 base 与对方已占地，只能染中立或同阵营地块，避免敌方扩张建筑把玩家基地/玩家领地翻色。
 - 敌方 AI 与受击反馈口径：单位寻敌优先级为士兵 -> 非基地建筑 -> 基地/核心兜底；建筑受击只表现为血条变化加闪红/抖动/缩放反馈，不显示飘字伤害数字；敌方扩张必须从敌方已占邻格向玩家侧推进，并且不能重涂基地或对方已占地块。
+- 士兵与建筑占格规则：存活建筑所在地块是 unit blocker。产兵时优先把士兵放到产兵建筑相邻的非水/非 void/无建筑地块；攻击建筑时先移动到目标建筑相邻可站立地块，建筑销毁并从 `buildings` 移除后该地块才可进入。当前仍是轻量直线移动，不做完整 BFS 寻路。

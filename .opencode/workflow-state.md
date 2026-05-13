@@ -96,3 +96,4 @@
 | v41 | 2026-05-12 | 六边形改为长边朝镜头的平顶朝向，并同步棋盘为列错位布局 | `src/game/HexGameController.ts`, `.temp/hex-visual-layout.test.mjs`, `.temp/screenshots/hex-flat-top-layout.png`, `doc/output/requirements.md`, `MEMORY.md` | ✅ 完成 |
 | v42 | 2026-05-12 | 清理六边形地块多余线框和阴影轮廓，改用纯色地块与物理微缝表现边界 | `src/game/HexGameController.ts`, `.temp/hex-outline-cleanup.test.mjs`, `.temp/hex-visual-layout.test.mjs`, `.temp/screenshots/hex-outline-cleanup-unlit-final.png`, `doc/output/requirements.md`, `MEMORY.md` | ✅ 完成 |
 | v43 | 2026-05-12 | 补充敌方从己方邻格向玩家侧扩张、单位目标优先级和建筑血条闪抖受击反馈记录 | `src/game/HexGameController.ts`, `.temp/unit-visibility-source.test.mjs`, `.temp/enemy-ai-damage-feedback-source.test.mjs`, `MEMORY.md`, `.opencode/workflow-state.md` | ✅ 完成 |
+| v44 | 2026-05-12 | 优化士兵生成与建筑阻挡：士兵生成到相邻非建筑地块，存活建筑地块阻挡移动，摧毁后恢复可进入 | `src/game/HexGameController.ts`, `.temp/soldier-building-tile-blocking-source.test.mjs`, `doc/output/requirements.md`, `MEMORY.md` | ✅ 完成 |
